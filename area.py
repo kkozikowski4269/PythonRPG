@@ -1,6 +1,7 @@
 
 
 class Area:
+    WALLS = [chr(c) for c in range(0x2550, 0x256C+1)]
     DOORS = ('u', 'r', 'd', 'l')
 
     def __init__(self, area_json):
