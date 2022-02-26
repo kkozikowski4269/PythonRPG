@@ -13,6 +13,7 @@ class RunningInputs(Enum):
     s = 'down'
     d = 'right'
 
+
 class IntroState:
     def __init__(self, game):
         self.game = game
@@ -34,14 +35,17 @@ class IntroState:
 
     def create_player_name(self):
         player_name = ""
+
         while len(player_name) < 1 or len(player_name) > 20:
             player_name = input('Enter your name: ')
+
             if len(player_name) < 1:
                 print('Name cannot be blank.')
                 input('\n\nPress enter to continue.')
             elif len(player_name) > 20:
                 print('Name cannot be longer than 20 characters.')
                 input('\n\nPress enter to continue.')
+
         return player_name
 
 
@@ -54,9 +58,11 @@ class NewGameState:
         player_factory = PlayerFactory()
         user_input = input('>>>')
         player_type = player_factory.get(user_input)
+
         if player_type is not None:
             self.game.player = player_type
             self.game.player.name = self.game.save_file_name
+            self.game.player.current_location = self.game.locations['location1']
             self.game.player.current_area = self.game.locations['location1'].areas['A2']
             self.game.player.set_position(1, 5)
             self.game.state = RunningState(self.game)
@@ -100,11 +106,14 @@ class RunningState:
         self.game = game
 
     def get_user_input(self):
+        # get keyboard input
         user_input = msvcrt.getch().decode()
         if user_input == 'p':
             self.game.state = EndState(self.game)
         try:
+            # try to move player
             self.game.player.move(RunningInputs[user_input].value)
+            self.game.player.current_area.check_doors(self.game.player)
         except KeyError:
             pass
 
@@ -121,7 +130,6 @@ class MenuState:
 
     def display(self):
         print("In menu state")
-
 
 
 class BattleState:

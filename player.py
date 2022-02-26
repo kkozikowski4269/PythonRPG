@@ -1,5 +1,3 @@
-import json
-
 from area import Area
 from states.player_states import PlayerAliveState, PlayerDeadState
 
@@ -9,7 +7,7 @@ class Player:
         self.name = None
         self.hp = 20
         self.state = PlayerAliveState(self)
-        self.current_location = "location1"
+        self.current_location = None
         self.current_area = None
         self.x = 0
         self.y = 0
@@ -39,7 +37,7 @@ class Player:
         else:
             dy = 0
             dx = 0
-        print(self.current_area.layout[self.y+dy][self.x+dx])
+        # check for wall collision
         if self.current_area.layout[self.y+dy][self.x+dx] not in Area.WALLS:
             self.clear_position()
             self.set_position(self.x+dx, self.y+dy)

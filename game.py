@@ -2,6 +2,7 @@ import json
 import os
 
 from area import Area
+from door import Door
 from location import Location
 from states.game_states import *
 
@@ -18,10 +19,23 @@ class Game:
     def set_locations(self):
         for file in os.listdir('locations'):
             with open(f'locations/{file}', encoding='utf-8') as json_file:
-                area_json = json.load(json_file)
+                area_json_file = json.load(json_file)
                 location = Location(name=file[:-5])
-                for area in area_json:
-                    location.add_area(Area(area))
+
+                for area_json in area_json_file:
+                    new_area = Area(area_json)
+
+                    # connect doors between areas
+                    for door in area_json['doors']:
+                        symbol = next(iter(door))
+                        destination = door[symbol]
+                        new_door = Door(symbol, destination)
+                        new_area.doors[symbol] = new_door
+                        print(new_area.doors)
+
+                    new_area.create_area()
+                    location.add_area(new_area)
+
                 self.locations[location.name] = location
 
     def get_user_input(self):

@@ -4,20 +4,34 @@
     "y": 0,
     "symbol": "══",
     "name": "A2",
-    "image": "images/locations/location1/A2.txt"
+    "code": "A2",
+    "image": "images/locations/location1/A2.txt",
+    "doors": [
+      {"r":  "B2"}
+    ]
   },
   {
     "x": 0,
     "y": 0,
     "symbol": "╔═",
     "name": "B1",
-    "image": "images/locations/location1/B1.txt"
+    "code": "B1",
+    "image": "images/locations/location1/B1.txt",
+    "doors": [
+      {"d":  "B2"}
+    ]
   },
   {
     "x": 0,
     "y": 0,
     "symbol": "═╣",
     "name": "B2",
-    "image": "images/locations/location1/B2.txt"
+    "code": "B2",
+    "image": "images/locations/location1/B2.txt",
+    "doors": [
+      {"u":  "B1"},
+      {"d":  "B2"},
+      {"l":  "A2"}
+    ]
   }
 ]
