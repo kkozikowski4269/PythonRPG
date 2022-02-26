@@ -1,0 +1,23 @@
+[
+  {
+    "x": 0,
+    "y": 0,
+    "symbol": "══",
+    "name": "A2",
+    "image": "images/locations/location1/A2.txt"
+  },
+  {
+    "x": 0,
+    "y": 0,
+    "symbol": "╔═",
+    "name": "B1",
+    "image": "images/locations/location1/B1.txt"
+  },
+  {
+    "x": 0,
+    "y": 0,
+    "symbol": "═╣",
+    "name": "B2",
+    "image": "images/locations/location1/B2.txt"
+  }
+]
