@@ -31,7 +31,6 @@ class Game:
                         destination = door[symbol]
                         new_door = Door(symbol, destination)
                         new_area.doors[symbol] = new_door
-                        print(new_area.doors)
 
                     new_area.create_area()
                     location.add_area(new_area)

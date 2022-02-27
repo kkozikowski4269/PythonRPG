@@ -110,6 +110,8 @@ class RunningState:
         user_input = msvcrt.getch().decode()
         if user_input == 'p':
             self.game.state = EndState(self.game)
+        if user_input == 'm':
+            self.game.state = MenuState(self.game)
         try:
             # try to move player
             self.game.player.move(RunningInputs[user_input].value)
@@ -119,17 +121,27 @@ class RunningState:
 
     def display(self):
         self.game.player.current_area.print_area()
+        print(self.game.state)
 
 
 class MenuState:
     def __init__(self, game):
         self.game = game
+        self.player = self.game.player
 
     def get_user_input(self):
-        pass
+        user_input = msvcrt.getch().decode()
+        if user_input == 'm':
+            self.game.state = RunningState(self.game)
+        if user_input == 'x':
+            self.game.state = EndState(self.game)
 
     def display(self):
-        print("In menu state")
+        print(self.game.player.name)
+        print(type(self.game.player))
+        print('Paused')
+        print('Press m key to resume')
+        print('press x key to exit')
 
 
 class BattleState:
