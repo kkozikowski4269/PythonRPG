@@ -15,7 +15,7 @@ class Game:
         self.save_file_name = None
         self.player = None
         self.locations = {}
-        self.save_manager = SaveManager('save_files/saves.txt')
+        self.save_manager = SaveManager('save_files/')
 
 
     def set_locations(self):

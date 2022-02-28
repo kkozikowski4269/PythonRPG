@@ -56,6 +56,7 @@ class NewGameState:
     def __init__(self, game):
         self.game = game
         self.game.set_locations()
+        self.game.save_manager.get_save_files()
 
     def get_user_input(self):
         if self.game.save_file_name is None:
@@ -72,7 +73,7 @@ class NewGameState:
                 self.game.player.current_area = self.game.locations['location1'].areas['A2']
                 self.game.player.set_position(1, 5)
                 file_path = f'save_files/{self.game.save_file_name}.bin'
-                self.game.save_manager.create_file(self.game, file_path)
+                self.game.save_manager.save_game(self.game, file_path)
                 self.game.state = RunningState(self.game)
 
     def display(self):
@@ -112,7 +113,7 @@ class LoadGameState:
             if user_input == 'exit':
                 self.game.state = IntroState(self.game)
             elif user_input in self.game.save_manager.save_names:
-                file_name = f'save_files/{user_input}.bin'
+                file_name = f'{user_input}.bin'
                 game_load = self.game.save_manager.load_game(file_name)
                 self.set_game_attrs(game_load)
                 self.game.state = RunningState(self.game)
@@ -203,7 +204,7 @@ class MenuState:
         if user_input == 'x':
             self.game.state = EndState(self.game)
         if user_input == 's':
-            file_name = f'save_files/{self.game.save_file_name}.bin'
+            file_name = f'{self.game.save_file_name}.bin'
             self.game.save_manager.save_game(self.game, file_name)
 
     def display(self):
