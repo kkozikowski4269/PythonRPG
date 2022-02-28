@@ -4,6 +4,7 @@ import os
 from area import Area
 from door import Door
 from location import Location
+from save_manager import SaveManager
 from states.game_states import *
 
 
@@ -14,6 +15,7 @@ class Game:
         self.save_file_name = None
         self.player = None
         self.locations = {}
+        self.save_manager = SaveManager('save_files/saves.txt')
 
 
     def set_locations(self):

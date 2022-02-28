@@ -1,6 +1,8 @@
 import msvcrt
 from enum import Enum
 from os import system
+
+import util
 from player import Knight
 from player_factory import PlayerFactory
 from states.player_states import PlayerDeadState
@@ -21,10 +23,11 @@ class IntroState:
     def get_user_input(self):
         choice = input('>>>')
         if choice == '1':
-            self.game.save_file_name = self.create_player_name()
             self.game.state = NewGameState(self.game)
         elif choice == '2':
             self.game.state = LoadGameState(self.game)
+        elif choice == '3':
+            self.game.state = DeleteGameState(self.game)
         elif choice == '5':
             self.game.state = EndState(self.game)
         system('cls')
@@ -55,20 +58,44 @@ class NewGameState:
         self.game.set_locations()
 
     def get_user_input(self):
-        player_factory = PlayerFactory()
-        user_input = input('>>>')
-        player_type = player_factory.get(user_input)
+        if self.game.save_file_name is None:
+            self.game.save_file_name = self.create_player_name()
+        else:
+            player_factory = PlayerFactory()
+            user_input = input('>>>')
+            player_type = player_factory.get(user_input)
 
-        if player_type is not None:
-            self.game.player = player_type
-            self.game.player.name = self.game.save_file_name
-            self.game.player.current_location = self.game.locations['location1']
-            self.game.player.current_area = self.game.locations['location1'].areas['A2']
-            self.game.player.set_position(1, 5)
-            self.game.state = RunningState(self.game)
+            if player_type is not None:
+                self.game.player = player_type
+                self.game.player.name = self.game.save_file_name
+                self.game.player.current_location = self.game.locations['location1']
+                self.game.player.current_area = self.game.locations['location1'].areas['A2']
+                self.game.player.set_position(1, 5)
+                file_path = f'save_files/{self.game.save_file_name}.bin'
+                self.game.save_manager.create_file(self.game, file_path)
+                self.game.state = RunningState(self.game)
 
     def display(self):
-        print(get_image('images/menu/character_choice_menu.txt'))
+        if self.game.save_file_name is None:
+            pass
+        else:
+            print(get_image('images/menu/character_choice_menu.txt'))
+
+    def create_player_name(self):
+        player_name = ""
+
+        while len(player_name) < 1 or len(player_name) > 20:
+            player_name = input('Enter your name: ')
+
+            if len(player_name) < 1:
+                print('Name cannot be blank.')
+                input('\n\nPress enter to continue.')
+            elif len(player_name) > 20:
+                print('Name cannot be longer than 20 characters.')
+                input('\n\nPress enter to continue.')
+            system('cls')
+
+        return player_name
 
 
 class LoadGameState:
@@ -77,27 +104,64 @@ class LoadGameState:
         self.border = '================'
 
     def get_user_input(self):
-        user_input = input('>>>')
-        if user_input == 'Kevin':
-            self.game.state = RunningState(self.game)
-            self.game.player = Knight()
-        system('cls')
+        if len(self.game.save_manager.save_names) == 0:
+            input()
+            self.game.state = IntroState(self.game)
+        else:
+            user_input = input('>>>')
+            if user_input == 'exit':
+                self.game.state = IntroState(self.game)
+            elif user_input in self.game.save_manager.save_names:
+                file_name = f'save_files/{user_input}.bin'
+                game_load = self.game.save_manager.load_game(file_name)
+                self.set_game_attrs(game_load)
+                self.game.state = RunningState(self.game)
 
     def display(self):
-        system('cls')
-        print(f'\n\n\tSaved Games:\n\t{self.border}')
-        print(f"\tKevin\n\t{self.border}")
+        print(util.get_image('images/menu/load_game_heading.txt'))
+        if len(self.game.save_manager.save_names) == 0:
+            print('\tThere are no saved games.')
+            print('\n\t(Press enter to continue.)')
+        else:
+            print(f'\n\n\tSaved Games:\n\t{self.border}')
+            for name in self.game.save_manager.save_names:
+                print(f'\t{name}')
+            print('\n\t(Enter "exit" to return to main menu)')
 
+    # setting attributes individually for now because reassigning game wasn't working
+    def set_game_attrs(self, game_load):
+        self.game.state = game_load.state
+        self.game.save_file_name = game_load.save_file_name
+        self.game.player = game_load.player
+        self.game.locations = game_load.locations
 
 class DeleteGameState:
     def __init__(self, game):
         self.game = game
+        self.border = '================'
 
     def get_user_input(self):
-        user_input = input('>>>')
+        if len(self.game.save_manager.save_names) == 0:
+            input()
+            self.game.state = IntroState(self.game)
+        else:
+            user_input = input('>>>')
+            if user_input == 'exit':
+                self.game.state = IntroState(self.game)
+            elif user_input in self.game.save_manager.save_names:
+                file_path = f'save_files/{user_input}.bin'
+                self.game.save_manager.delete_game(user_input, file_path)
 
     def display(self):
-        print('In delete state')
+        print(util.get_image('images/menu/delete_game_heading.txt'))
+        if len(self.game.save_manager.save_names) == 0:
+            print('\tThere are no saved games.')
+            print('\n\t(Press enter to continue.)')
+        else:
+            print(f'\n\n\tSaved Games:\n\t{self.border}')
+            for name in self.game.save_manager.save_names:
+                print(f'\t{name}')
+            print('\n\t(Enter "exit" to return to main menu)')
 
 
 class RunningState:
@@ -108,8 +172,11 @@ class RunningState:
     def get_user_input(self):
         # get keyboard input
         user_input = msvcrt.getch().decode()
+        # ----------------------------------------
+        # temporary quit key
         if user_input == 'p':
             self.game.state = EndState(self.game)
+        # ----------------------------------------
         if user_input == 'm':
             self.game.state = MenuState(self.game)
         try:
@@ -135,12 +202,16 @@ class MenuState:
             self.game.state = RunningState(self.game)
         if user_input == 'x':
             self.game.state = EndState(self.game)
+        if user_input == 's':
+            file_name = f'save_files/{self.game.save_file_name}.bin'
+            self.game.save_manager.save_game(self.game, file_name)
 
     def display(self):
         print(self.game.player.name)
         print(type(self.game.player))
         print('Paused')
         print('Press m key to resume')
+        print('Press s key to save')
         print('press x key to exit')
 
 
