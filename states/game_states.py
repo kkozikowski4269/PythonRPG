@@ -3,7 +3,6 @@ from enum import Enum
 from os import system
 
 import util
-from player import Knight
 from player_factory import PlayerFactory
 from states.player_states import PlayerDeadState
 from util import get_image
@@ -14,6 +13,13 @@ class RunningInputs(Enum):
     a = 'left'
     s = 'down'
     d = 'right'
+
+
+"""
+========================================================================================================================
+INTRO STATE (MAIN MENU)
+========================================================================================================================
+"""
 
 
 class IntroState:
@@ -52,6 +58,13 @@ class IntroState:
         return player_name
 
 
+"""
+========================================================================================================================
+NEW GAME STATE
+========================================================================================================================
+"""
+
+
 class NewGameState:
     def __init__(self, game):
         self.game = game
@@ -72,8 +85,8 @@ class NewGameState:
                 self.game.player.current_location = self.game.locations['location1']
                 self.game.player.current_area = self.game.locations['location1'].areas['A2']
                 self.game.player.set_position(1, 5)
-                file_path = f'save_files/{self.game.save_file_name}.bin'
-                self.game.save_manager.save_game(self.game, file_path)
+                file_name = f'{self.game.save_file_name}.bin'
+                self.game.save_manager.save_game(self.game, file_name)
                 self.game.state = RunningState(self.game)
 
     def display(self):
@@ -97,6 +110,13 @@ class NewGameState:
             system('cls')
 
         return player_name
+
+
+"""
+========================================================================================================================
+LOAD GAME STATE
+========================================================================================================================
+"""
 
 
 class LoadGameState:
@@ -136,6 +156,14 @@ class LoadGameState:
         self.game.player = game_load.player
         self.game.locations = game_load.locations
 
+
+"""
+========================================================================================================================
+DELETE GAME STATE
+========================================================================================================================
+"""
+
+
 class DeleteGameState:
     def __init__(self, game):
         self.game = game
@@ -150,8 +178,8 @@ class DeleteGameState:
             if user_input == 'exit':
                 self.game.state = IntroState(self.game)
             elif user_input in self.game.save_manager.save_names:
-                file_path = f'save_files/{user_input}.bin'
-                self.game.save_manager.delete_game(user_input, file_path)
+                file_name = user_input
+                self.game.save_manager.delete_game(file_name)
 
     def display(self):
         print(util.get_image('images/menu/delete_game_heading.txt'))
@@ -163,6 +191,13 @@ class DeleteGameState:
             for name in self.game.save_manager.save_names:
                 print(f'\t{name}')
             print('\n\t(Enter "exit" to return to main menu)')
+
+
+"""
+========================================================================================================================
+RUNNING STATE
+========================================================================================================================
+"""
 
 
 class RunningState:
@@ -189,7 +224,13 @@ class RunningState:
 
     def display(self):
         self.game.player.current_area.print_area()
-        print(self.game.state)
+
+
+"""
+========================================================================================================================
+MENU STATE (OUT OF BATTLE MENU)
+========================================================================================================================
+"""
 
 
 class MenuState:
@@ -216,6 +257,13 @@ class MenuState:
         print('press x key to exit')
 
 
+"""
+========================================================================================================================
+BATTLE STATE
+========================================================================================================================
+"""
+
+
 class BattleState:
     def __init__(self, game):
         self.game = game
@@ -225,6 +273,13 @@ class BattleState:
 
     def display(self):
         print("In battle state")
+
+
+"""
+========================================================================================================================
+BATTLE MENU STATE (MENU WHILE IN BATTLE)
+========================================================================================================================
+"""
 
 
 class BattleMenuState:
@@ -238,6 +293,13 @@ class BattleMenuState:
         print("In battle menu state")
 
 
+"""
+========================================================================================================================
+GAME OVER STATE (GAME END - PLAYER LOSES)
+========================================================================================================================
+"""
+
+
 class GameOverState:
     def __init__(self, game):
         self.game = game
@@ -249,6 +311,13 @@ class GameOverState:
         print("In game over state")
 
 
+"""
+========================================================================================================================
+VICTORY STATE (GAME END - PLAYER WINS)
+========================================================================================================================
+"""
+
+
 class VictoryState:
     def __init__(self, game):
         self.game = game
@@ -258,6 +327,13 @@ class VictoryState:
 
     def display(self):
         print("In victory state")
+
+
+"""
+========================================================================================================================
+END STATE - EXITING THE CURRENT GAME
+========================================================================================================================
+"""
 
 
 class EndState:

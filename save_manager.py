@@ -9,7 +9,7 @@ class SaveManager:
         self.save_names = self.get_save_files()
 
     def save_game(self, game, file_name):
-        save_bin = open(file_name, 'wb')
+        save_bin = open(f'{self.saves_dir}{file_name}', 'wb+')
         pickle.dump(game, save_bin)
         save_bin.close()
 
@@ -22,13 +22,15 @@ class SaveManager:
             game_load = None
         return game_load
 
-    def delete_game(self, file_name, file_path):
+    def delete_game(self, file_name):
         self.save_names.remove(file_name)
-        if os.path.exists(file_path):
-            os.remove(file_path)
+        if os.path.exists(f'{self.saves_dir}{file_name}.bin'):
+            os.remove(f'{self.saves_dir}{file_name}.bin')
 
     def get_save_files(self):
         saves = []
+        if not os.path.exists('save_files'):
+            os.mkdir(os.path.join('save_files'))
         for save_file in os.listdir('save_files'):
             if re.search(r".bin$", save_file) is not None:
                 saves.append(save_file[:-4])
