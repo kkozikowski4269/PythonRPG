@@ -5,7 +5,6 @@ from states.player_states import PlayerAliveState, PlayerDeadState
 class Player:
     def __init__(self):
         self.name = None
-        self.hp = 20
         self.state = PlayerAliveState(self)
         self.current_location = None
         self.current_area = None
@@ -50,19 +49,38 @@ class Player:
 class Knight(Player):
     def __init__(self):
         super().__init__()
+        self.hp = 200
+        self.strength = 5
+        self.wisdom = 5
+        self.dexterity = 5
+        self.defense = 5
 
 
 class Warrior(Player):
     def __init__(self):
         super().__init__()
+        self.hp = 150
+        self.strength = 13
+        self.wisdom = 1
+        self.dexterity = 1
+        self.defense = 3
 
 
 class Wizard(Player):
     def __init__(self):
         super().__init__()
+        self.hp = 150
+        self.strength = 3
+        self.wisdom = 10
+        self.dexterity = 3
+        self.defense = 3
 
 
 class Rogue(Player):
     def __init__(self):
         super().__init__()
-
+        self.hp = 150
+        self.strength = 3
+        self.wisdom = 3
+        self.dexterity = 10
+        self.defense = 3
