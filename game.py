@@ -16,6 +16,7 @@ class Game:
         self.player = None
         self.locations = {}
         self.save_manager = SaveManager('save_files/')
+        self.volume = 3
 
 
     def set_locations(self):
@@ -47,6 +48,7 @@ class Game:
 
     def play(self):
         system('cls')
+        util.set_volume(self.volume)
         while type(self.state) is not EndState:
             self.display()
             self.get_user_input()

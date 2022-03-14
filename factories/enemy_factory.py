@@ -12,8 +12,10 @@ class EnemyFactory:
     def get(self, enemy_type):
         if enemy_type == 'D':
             new_enemy = enemy.Dragon()
+            new_enemy.battle_music = 'boss_song.wav'
         elif enemy_type == 'd':
             new_enemy = enemy.Demon()
+            new_enemy.battle_music = 'miniboss_song.wav'
         elif enemy_type == 'G':
             new_enemy = enemy.Gargoyl()
         elif enemy_type == 'K':
@@ -28,6 +30,9 @@ class EnemyFactory:
             new_enemy = enemy.Spider()
         else:
             new_enemy = None
+
+        if new_enemy.battle_music is None:
+            new_enemy.battle_music = 'battle_song.wav'
 
         if new_enemy is not None:
             img = f'images/enemy/{new_enemy.__class__.__name__.lower()}.txt'

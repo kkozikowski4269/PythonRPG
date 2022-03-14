@@ -1,4 +1,5 @@
 import msvcrt
+import re
 from enum import Enum
 from os import system
 
@@ -25,6 +26,7 @@ INTRO STATE (MAIN MENU)
 class IntroState:
     def __init__(self, game):
         self.game = game
+        util.play_music('title_song.wav')
 
     def get_user_input(self):
         choice = input('>>>')
@@ -34,6 +36,8 @@ class IntroState:
             self.game.state = LoadGameState(self.game)
         elif choice == '3':
             self.game.state = DeleteGameState(self.game)
+        elif choice == '4':
+            self.game.state = SettingsState(self.game)
         elif choice == '5':
             self.game.state = EndState(self.game)
         system('cls')
@@ -147,7 +151,7 @@ class LoadGameState:
             print(f'\n\n\tSaved Games:\n\t{self.border}')
             for name in self.game.save_manager.save_names:
                 print(f'\t{name}')
-            print('\n\t(Enter "exit" to return to main menu)')
+            print('\n\t(Enter "exit" to go back)')
 
     # setting attributes individually for now because reassigning game wasn't working
     def set_game_attrs(self, game_load):
@@ -155,6 +159,59 @@ class LoadGameState:
         self.game.save_file_name = game_load.save_file_name
         self.game.player = game_load.player
         self.game.locations = game_load.locations
+        self.game.volume = game_load.volume
+        util.set_volume(self.game.volume)
+
+
+"""
+========================================================================================================================
+SETTINGS GAME STATE
+========================================================================================================================
+"""
+
+
+class SettingsState:
+    def __init__(self, game):
+        self.game = game
+        self.border = '================'
+        self.previous_state = game.state
+
+    def get_user_input(self):
+        user_input = input('>>>')
+        if user_input == 'exit':
+            self.game.state = self.previous_state
+        elif user_input == '1':
+            self.game.state = SetVolumeState(self.game)
+
+    def display(self):
+        print(util.get_image('images/menu/settings/settings.txt'))
+        print('\n\t(Enter "exit" to go back)')
+
+
+"""
+========================================================================================================================
+SET VOLUME GAME STATE
+========================================================================================================================
+"""
+
+
+class SetVolumeState:
+    def __init__(self, game):
+        self.game = game
+        self.border = '================'
+        self.previous_state = game.state
+
+    def get_user_input(self):
+        user_input = input('>>>')
+        if user_input == 'exit':
+            self.game.state = self.previous_state
+        elif re.match('[0-9]', user_input):
+            util.set_volume(int(user_input))
+            self.game.volume = int(user_input)
+
+    def display(self):
+        print(util.get_image('images/menu/settings/volume.txt').replace('-', str(util.get_volume())))
+        print('\n\t(Enter "exit" to go back)')
 
 
 """
@@ -190,7 +247,7 @@ class DeleteGameState:
             print(f'\n\n\tSaved Games:\n\t{self.border}')
             for name in self.game.save_manager.save_names:
                 print(f'\t{name}')
-            print('\n\t(Enter "exit" to return to main menu)')
+            print('\n\t(Enter "exit" to go back)')
 
 
 """
@@ -204,6 +261,7 @@ class RunningState:
 
     def __init__(self, game):
         self.game = game
+        util.play_music('main_song.wav')
 
     def get_user_input(self):
         # get keyboard input
@@ -243,6 +301,7 @@ class RunningState:
             if enemy.is_alive():
                 enemy.move()
 
+
 """
 ========================================================================================================================
 MENU STATE (OUT OF BATTLE MENU)
@@ -254,6 +313,7 @@ class MenuState:
     def __init__(self, game):
         self.game = game
         self.player = self.game.player
+        util.play_music('menu_song.wav')
 
     def get_user_input(self):
         user_input = msvcrt.getch().decode()
@@ -264,6 +324,9 @@ class MenuState:
         if user_input == 's':
             file_name = f'{self.game.save_file_name}.bin'
             self.game.save_manager.save_game(self.game, file_name)
+        if user_input == 'q':
+            self.game.state = SettingsState(self.game)
+
 
     def display(self):
         print(self.game.player.name)
@@ -272,6 +335,7 @@ class MenuState:
         print('Press m key to resume')
         print('Press s key to save')
         print('press x key to quit')
+        print('press q to open settings menu')
 
 
 """
@@ -286,6 +350,7 @@ class BattleState:
         self.game = game
         self.enemy = enemy
         self.player = self.game.player
+        util.play_music(enemy.battle_music)
 
     def get_user_input(self):
         input()
@@ -295,7 +360,6 @@ class BattleState:
 
     def display(self):
         print(self.enemy.image)
-
 
 """
 ========================================================================================================================

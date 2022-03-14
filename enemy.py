@@ -16,6 +16,7 @@ class Enemy:
         self.location = None
         self.icon = 'E'
         self.image = None
+        self.battle_music = None
 
     def __str__(self):
         return self.icon
