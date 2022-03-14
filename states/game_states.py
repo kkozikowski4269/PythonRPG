@@ -4,6 +4,7 @@ from os import system
 
 import util
 from player_factory import PlayerFactory
+from states.enemy_states import EnemyUnspawnedState
 from states.player_states import PlayerDeadState
 from util import get_image
 
@@ -216,15 +217,32 @@ class RunningState:
         if user_input == 'm':
             self.game.state = MenuState(self.game)
         try:
-            # try to move player
-            self.game.player.move(RunningInputs[user_input].value)
-            self.game.player.current_area.check_doors(self.game.player)
+            self.check_events(user_input)
         except KeyError:
             pass
 
     def display(self):
         self.game.player.current_area.print_area()
 
+    def check_events(self, user_input):
+        self.move_enemies()
+        self.check_battle()
+        self.game.player.move(RunningInputs[user_input].value)
+        self.check_battle()
+        self.game.player.current_area.check_doors(self.game.player)
+
+    def check_battle(self):
+        battle = self.game.player.current_area.check_for_battle(self.game.player)
+        start_battle = battle[0]
+        enemy = battle[1]
+        if start_battle:
+            self.game.player.current_area.despawn_enemy(enemy)
+            self.game.state = BattleState(self.game, enemy)
+
+    def move_enemies(self):
+        for enemy in self.game.player.current_area.enemies:
+            if enemy.is_alive():
+                enemy.move()
 
 """
 ========================================================================================================================
@@ -243,7 +261,7 @@ class MenuState:
         if user_input == 'm':
             self.game.state = RunningState(self.game)
         if user_input == 'x':
-            self.game.state = EndState(self.game)
+            self.game.state = IntroState(self.game)
         if user_input == 's':
             file_name = f'{self.game.save_file_name}.bin'
             self.game.save_manager.save_game(self.game, file_name)
@@ -254,7 +272,7 @@ class MenuState:
         print('Paused')
         print('Press m key to resume')
         print('Press s key to save')
-        print('press x key to exit')
+        print('press x key to quit')
 
 
 """
@@ -265,11 +283,16 @@ BATTLE STATE
 
 
 class BattleState:
-    def __init__(self, game):
+    def __init__(self, game, enemy):
         self.game = game
+        self.enemy = enemy
+        self.player = self.game.player
 
     def get_user_input(self):
-        pass
+        input()
+        self.enemy.state = EnemyUnspawnedState(self.enemy)
+        self.game.state = RunningState(self.game)
+        self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
 
     def display(self):
         print("In battle state")

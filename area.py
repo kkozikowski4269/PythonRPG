@@ -1,9 +1,14 @@
+import random
+
 from door import Door
+from enemy import Enemy
+# from states.game_states import BattleState
+from states.enemy_states import EnemySpawnedState, EnemyUnspawnedState
 
 
 class Area:
     # list of UTF-8 symbols used for map layout
-    WALLS = [chr(c) for c in range(0x2550, 0x256C+1)]
+    WALLS = [chr(c) for c in range(0x2550, 0x256C + 1)]
     DOOR_SYMBOLS = ('u', 'r', 'd', 'l')
 
     def __init__(self, area_json):
@@ -15,6 +20,9 @@ class Area:
         self.layout = []
         self.doors = {}
         self.area_json = area_json
+        self.unspawned_enemies = []
+        self.spawned_enemies = []
+        self.enemies = []
 
     def __str__(self):
         return "Area: " + self.name
@@ -28,6 +36,10 @@ class Area:
                     if c in Area.DOOR_SYMBOLS:
                         self.doors[c].set_position(x, y)
                         c = ' '
+                    if c == 'E':
+                        enemy = self.create_enemy()
+                        enemy.set_spawn_position(x, y)
+                        c = ' '
                     if c != '\n':
                         row.append(c)
                 self.layout.append(row)
@@ -36,10 +48,37 @@ class Area:
     # check if player is standing on a door space
     def check_doors(self, player):
         for door in self.doors.values():
-            if door.has_player(player):
+            if player.is_colliding(door):
                 player.clear_position()
                 door.use_door(player)
+
+    def check_for_battle(self, player):
+        for enemy in self.enemies:
+            if enemy.is_alive() and player.is_colliding(enemy):
+                return True, enemy
+        return False, None
 
     def print_area(self):
         for row in self.layout:
             print(*row, sep="")
+
+    def create_enemy(self):
+        enemy = Enemy()
+        enemy.area = self
+        self.enemies.append(enemy)
+        return enemy
+
+    def spawn_enemies(self):
+        for enemy in self.enemies:
+            if not enemy.is_alive():
+                enemy.state = EnemySpawnedState(enemy)
+            self.layout[enemy.y_spawn][enemy.x_spawn] = enemy
+
+    def despawn_enemy(self, enemy):
+        enemy.state = EnemyUnspawnedState(enemy)
+        enemy.clear_position()
+        enemy.reset_position()
+
+    def despawn_enemies(self):
+        for enemy in self.enemies:
+            self.despawn_enemy(enemy)

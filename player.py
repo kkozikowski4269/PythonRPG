@@ -37,9 +37,15 @@ class Player:
             dy = 0
             dx = 0
         # check for wall collision
-        if self.current_area.layout[self.y+dy][self.x+dx] not in Area.WALLS:
+        next_space = self.current_area.layout[self.y+dy][self.x+dx]
+        if next_space not in Area.WALLS:
             self.clear_position()
             self.set_position(self.x+dx, self.y+dy)
+
+    def is_colliding(self, obj2):
+        if self.x == obj2.x and self.y == obj2.y:
+            return True
+        return False
 
 
     def __str__(self):

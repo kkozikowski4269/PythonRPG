@@ -10,11 +10,6 @@ class Door:
         self.y = None
         self.dest_area_code = dest_area_code
 
-    def has_player(self, player):
-        if self.x == player.x and self.y == player.y:
-            return True
-        return False
-
     def use_door(self, player):
         next_area = player.current_location.areas[self.dest_area_code]
         other_symbol = None
@@ -39,7 +34,10 @@ class Door:
         # set player's position in the next area
         x = next_area.doors[other_symbol].x + dx
         y = next_area.doors[other_symbol].y + dy
+
+        player.current_area.despawn_enemies()
         player.current_area = next_area
+        player.current_area.spawn_enemies()
         player.set_position(x, y)
 
     def set_destination(self, dest_area_code):
