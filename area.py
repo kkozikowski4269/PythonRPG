@@ -3,6 +3,7 @@ import random
 from door import Door
 from enemy import Enemy
 # from states.game_states import BattleState
+from factories.enemy_factory import EnemyFactory
 from states.enemy_states import EnemySpawnedState, EnemyUnspawnedState
 
 
@@ -36,8 +37,16 @@ class Area:
                     if c in Area.DOOR_SYMBOLS:
                         self.doors[c].set_position(x, y)
                         c = ' '
-                    if c == 'E':
-                        enemy = self.create_enemy()
+                    elif c == 'E':
+                        enemy = self.create_random_strong_enemy()
+                        enemy.set_spawn_position(x, y)
+                        c = ' '
+                    elif c == 'e':
+                        enemy = self.create_random_weak_enemy()
+                        enemy.set_spawn_position(x, y)
+                        c = ' '
+                    elif c in EnemyFactory.ALL_ENEMY_TYPES:
+                        enemy = self.create_enemy(c)
                         enemy.set_spawn_position(x, y)
                         c = ' '
                     if c != '\n':
@@ -49,8 +58,21 @@ class Area:
     def check_doors(self, player):
         for door in self.doors.values():
             if player.is_colliding(door):
-                player.clear_position()
-                door.use_door(player)
+                self.leave(player)
+                next_area_info = door.use_door(player)
+                next_area = next_area_info[0]
+                new_x_pos = next_area_info[1]
+                new_y_pos = next_area_info[2]
+                next_area.enter(player, new_x_pos, new_y_pos)
+
+    def leave(self, player):
+        self.despawn_enemies()
+        player.clear_position()
+
+    def enter(self, player, x, y):
+        self.spawn_enemies()
+        player.current_area = self
+        player.set_position(x, y)
 
     def check_for_battle(self, player):
         for enemy in self.enemies:
@@ -62,8 +84,23 @@ class Area:
         for row in self.layout:
             print(*row, sep="")
 
-    def create_enemy(self):
-        enemy = Enemy()
+    def create_enemy(self, enemy_type):
+        enemy_factory = EnemyFactory()
+        enemy = enemy_factory.get(enemy_type)
+        enemy.area = self
+        self.enemies.append(enemy)
+        return enemy
+
+    def create_random_weak_enemy(self):
+        enemy_factory = EnemyFactory()
+        enemy = enemy_factory.get(random.choice(EnemyFactory.WEAK_ENEMY_TYPES))
+        enemy.area = self
+        self.enemies.append(enemy)
+        return enemy
+
+    def create_random_strong_enemy(self):
+        enemy_factory = EnemyFactory()
+        enemy = enemy_factory.get(random.choice(EnemyFactory.STRONG_ENEMY_TYPES))
         enemy.area = self
         self.enemies.append(enemy)
         return enemy

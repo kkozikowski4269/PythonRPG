@@ -7,6 +7,8 @@ class EnemySpawnedState:
         if self.enemy.hp <= 0:
             self.enemy.set_state(EnemyUnspawnedState(self.enemy))
 
+    def is_alive(self):
+        return True
 
 class EnemyUnspawnedState:
     def __init__(self, enemy):
@@ -14,4 +16,7 @@ class EnemyUnspawnedState:
         self.enemy.set_icon(' ')
 
     def check_health(self):
-        pass
+        return 0
+
+    def is_alive(self):
+        return False

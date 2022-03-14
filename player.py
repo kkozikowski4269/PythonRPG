@@ -47,6 +47,9 @@ class Player:
             return True
         return False
 
+    def is_alive(self):
+        return self.state.is_alive()
+
 
     def __str__(self):
         return 'P'
@@ -60,6 +63,7 @@ class Knight(Player):
         self.wisdom = 5
         self.dexterity = 5
         self.defense = 5
+        self.special_defense = 4
 
 
 class Warrior(Player):
@@ -70,6 +74,7 @@ class Warrior(Player):
         self.wisdom = 1
         self.dexterity = 1
         self.defense = 3
+        self.special_defense = 1
 
 
 class Wizard(Player):
@@ -80,6 +85,7 @@ class Wizard(Player):
         self.wisdom = 10
         self.dexterity = 3
         self.defense = 3
+        self.special_defense = 6
 
 
 class Rogue(Player):
@@ -90,3 +96,4 @@ class Rogue(Player):
         self.wisdom = 3
         self.dexterity = 10
         self.defense = 3
+        self.special_defense = 2

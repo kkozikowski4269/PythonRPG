@@ -3,9 +3,8 @@ from enum import Enum
 from os import system
 
 import util
-from player_factory import PlayerFactory
+from factories.player_factory import PlayerFactory
 from states.enemy_states import EnemyUnspawnedState
-from states.player_states import PlayerDeadState
 from util import get_image
 
 
@@ -295,7 +294,7 @@ class BattleState:
         self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
 
     def display(self):
-        print("In battle state")
+        print(self.enemy.image)
 
 
 """

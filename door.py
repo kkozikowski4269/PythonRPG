@@ -31,14 +31,11 @@ class Door:
             other_symbol = 'l'
             dx = 1
 
-        # set player's position in the next area
+        # position for player to appear in the next room
         x = next_area.doors[other_symbol].x + dx
         y = next_area.doors[other_symbol].y + dy
 
-        player.current_area.despawn_enemies()
-        player.current_area = next_area
-        player.current_area.spawn_enemies()
-        player.set_position(x, y)
+        return next_area, x, y
 
     def set_destination(self, dest_area_code):
         self.dest_area_code = dest_area_code

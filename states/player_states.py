@@ -6,10 +6,16 @@ class PlayerAliveState:
         if self.player.hp <= 0:
             self.player.set_state(PlayerDeadState(self.player))
 
+    def is_alive(self):
+        return True
+
 
 class PlayerDeadState:
     def __init__(self, player):
         self.player = player
 
     def check_health(self):
-        pass
+        return 0
+
+    def is_alive(self):
+        return False
