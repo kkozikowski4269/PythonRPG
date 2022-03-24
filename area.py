@@ -1,7 +1,6 @@
 import random
 
 from door import Door
-from enemy import Enemy
 # from states.game_states import BattleState
 from factories.enemy_factory import EnemyFactory
 from states.enemy_states import EnemySpawnedState, EnemyUnspawnedState
@@ -24,12 +23,19 @@ class Area:
         self.unspawned_enemies = []
         self.spawned_enemies = []
         self.enemies = []
+        self.create_area()
 
     def __str__(self):
         return "Area: " + self.name
 
     # read area layout from text file and convert into a 2d array
     def create_area(self):
+        for door in self.area_json['doors']:
+            symbol = next(iter(door))
+            destination = door[symbol]
+            new_door = Door(symbol, destination)
+            self.doors[symbol] = new_door
+
         with open(self.image_path, "r", encoding='utf-8') as file:
             for y, line in enumerate(file.readlines()):
                 row = []
@@ -53,6 +59,13 @@ class Area:
                         row.append(c)
                 self.layout.append(row)
         file.close()
+
+    def set_doors(self):
+        for door in self.area_json['doors']:
+            symbol = next(iter(door))
+            destination = door[symbol]
+            new_door = Door(symbol, destination)
+            self.doors[symbol] = new_door
 
     # check if player is standing on a door space
     def check_doors(self, player):

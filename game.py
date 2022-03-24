@@ -2,7 +2,6 @@ import json
 import os
 
 from area import Area
-from door import Door
 from location import Location
 from save_manager import SaveManager
 from states.game_states import *
@@ -16,7 +15,7 @@ class Game:
         self.player = None
         self.locations = {}
         self.save_manager = SaveManager('save_files/')
-        self.volume = 3
+        self.volume = 1
 
 
     def set_locations(self):
@@ -27,15 +26,6 @@ class Game:
 
                 for area_json in area_json_file:
                     new_area = Area(area_json)
-
-                    # connect doors between areas
-                    for door in area_json['doors']:
-                        symbol = next(iter(door))
-                        destination = door[symbol]
-                        new_door = Door(symbol, destination)
-                        new_area.doors[symbol] = new_door
-
-                    new_area.create_area()
                     location.add_area(new_area)
 
                 self.locations[location.name] = location

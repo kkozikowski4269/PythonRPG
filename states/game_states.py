@@ -46,21 +46,6 @@ class IntroState:
         print(get_image('images/menu/title_screen.txt'))
         print(get_image('images/menu/main_menu.txt'))
 
-    def create_player_name(self):
-        player_name = ""
-
-        while len(player_name) < 1 or len(player_name) > 20:
-            player_name = input('Enter your name: ')
-
-            if len(player_name) < 1:
-                print('Name cannot be blank.')
-                input('\n\nPress enter to continue.')
-            elif len(player_name) > 20:
-                print('Name cannot be longer than 20 characters.')
-                input('\n\nPress enter to continue.')
-
-        return player_name
-
 
 """
 ========================================================================================================================
@@ -88,6 +73,7 @@ class NewGameState:
                 self.game.player.name = self.game.save_file_name
                 self.game.player.current_location = self.game.locations['location1']
                 self.game.player.current_area = self.game.locations['location1'].areas['A2']
+                self.game.player.current_area.spawn_enemies()
                 self.game.player.set_position(1, 5)
                 file_name = f'{self.game.save_file_name}.bin'
                 self.game.save_manager.save_game(self.game, file_name)
