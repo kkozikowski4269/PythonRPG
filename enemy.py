@@ -1,6 +1,7 @@
 import random
 
 from states.enemy_states import EnemyUnspawnedState
+from states.game_states import BattleState
 
 
 class Enemy:
@@ -80,6 +81,15 @@ class Enemy:
 
     def attack(self):
         pass
+
+    def do_action(self, player, game):
+        if self.state.is_alive():
+            if self.is_colliding(player):
+                game.state = BattleState(game, self)
+            else:
+                self.move()
+                if self.is_colliding(player):
+                    game.state = BattleState(game, self)
 
 
 class Skeleton(Enemy):

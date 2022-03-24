@@ -67,31 +67,16 @@ class Area:
             new_door = Door(symbol, destination)
             self.doors[symbol] = new_door
 
-    # check if player is standing on a door space
-    def check_doors(self, player):
-        for door in self.doors.values():
-            if player.is_colliding(door):
-                self.leave(player)
-                next_area_info = door.use_door(player)
-                next_area = next_area_info[0]
-                new_x_pos = next_area_info[1]
-                new_y_pos = next_area_info[2]
-                next_area.enter(player, new_x_pos, new_y_pos)
-
     def leave(self, player):
         self.despawn_enemies()
+        player.observers.clear()
         player.clear_position()
 
     def enter(self, player, x, y):
         self.spawn_enemies()
+        player.observers = self.enemies + list(self.doors.values())
         player.current_area = self
         player.set_position(x, y)
-
-    def check_for_battle(self, player):
-        for enemy in self.enemies:
-            if enemy.is_alive() and player.is_colliding(enemy):
-                return True, enemy
-        return False, None
 
     def print_area(self):
         for row in self.layout:

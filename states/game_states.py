@@ -73,8 +73,8 @@ class NewGameState:
                 self.game.player.name = self.game.save_file_name
                 self.game.player.current_location = self.game.locations['location1']
                 self.game.player.current_area = self.game.locations['location1'].areas['A2']
-                self.game.player.current_area.spawn_enemies()
                 self.game.player.set_position(1, 5)
+                self.game.player.current_area.enter(self.game.player, self.game.player.x, self.game.player.y)
                 file_name = f'{self.game.save_file_name}.bin'
                 self.game.save_manager.save_game(self.game, file_name)
                 self.game.state = RunningState(self.game)
@@ -268,24 +268,8 @@ class RunningState:
         self.game.player.current_area.print_area()
 
     def check_events(self, user_input):
-        self.move_enemies()
-        self.check_battle()
         self.game.player.move(RunningInputs[user_input].value)
-        self.check_battle()
-        self.game.player.current_area.check_doors(self.game.player)
-
-    def check_battle(self):
-        battle = self.game.player.current_area.check_for_battle(self.game.player)
-        start_battle = battle[0]
-        enemy = battle[1]
-        if start_battle:
-            self.game.player.current_area.despawn_enemy(enemy)
-            self.game.state = BattleState(self.game, enemy)
-
-    def move_enemies(self):
-        for enemy in self.game.player.current_area.enemies:
-            if enemy.is_alive():
-                enemy.move()
+        self.game.player.notify_observers(self.game)
 
 
 """
@@ -341,6 +325,7 @@ class BattleState:
     def get_user_input(self):
         input()
         self.enemy.state = EnemyUnspawnedState(self.enemy)
+        self.player.observers.remove(self.enemy)
         self.game.state = RunningState(self.game)
         self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
 

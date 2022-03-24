@@ -1,4 +1,3 @@
-from area import Area
 from states.player_states import PlayerAliveState, PlayerDeadState
 
 
@@ -10,6 +9,7 @@ class Player:
         self.current_area = None
         self.x = 0
         self.y = 0
+        self.observers = []
 
     def check_health(self):
         self.state.check_health()
@@ -38,7 +38,7 @@ class Player:
             dx = 0
         # check for wall collision
         next_space = self.current_area.layout[self.y+dy][self.x+dx]
-        if next_space not in Area.WALLS:
+        if next_space not in self.current_area.WALLS:
             self.clear_position()
             self.set_position(self.x+dx, self.y+dy)
 
@@ -50,6 +50,9 @@ class Player:
     def is_alive(self):
         return self.state.is_alive()
 
+    def notify_observers(self, game):
+        for observer in self.observers:
+            observer.do_action(self, game)
 
     def __str__(self):
         return 'P'

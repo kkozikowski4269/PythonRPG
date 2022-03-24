@@ -11,6 +11,7 @@ class Door:
         self.dest_area_code = dest_area_code
 
     def use_door(self, player):
+        player.current_area.leave(player)
         next_area = player.current_location.areas[self.dest_area_code]
         other_symbol = None
         dx = 0
@@ -35,7 +36,7 @@ class Door:
         x = next_area.doors[other_symbol].x + dx
         y = next_area.doors[other_symbol].y + dy
 
-        return next_area, x, y
+        next_area.enter(player, x, y)
 
     def set_destination(self, dest_area_code):
         self.dest_area_code = dest_area_code
@@ -43,3 +44,7 @@ class Door:
     def set_position(self, x, y):
         self.x = x
         self.y = y
+
+    def do_action(self, player, game):
+        if player.is_colliding(self):
+            self.use_door(player)

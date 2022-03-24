@@ -19,3 +19,4 @@ class PlayerDeadState:
 
     def is_alive(self):
         return False
+
