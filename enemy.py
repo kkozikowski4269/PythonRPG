@@ -13,6 +13,12 @@ class Enemy:
         self.x_spawn = 0
         self.y_spawn = 0
         self.hp = 10
+        self.strength = 1
+        self.dexterity = 1
+        self.wisdom = 1
+        self.defense = 1
+        self.special_defense = 1
+        self.speed = 1
         self.area = None
         self.location = None
         self.icon = 'E'
@@ -76,6 +82,9 @@ class Enemy:
             return True
         return False
 
+    def check_health(self):
+        self.state.check_health()
+
     def is_alive(self):
         return self.state.is_alive()
 
@@ -90,6 +99,12 @@ class Enemy:
                 self.move()
                 if self.is_colliding(player):
                     game.state = BattleState(game, self)
+
+    def main_attack(self):
+        return 1
+
+    def alt_attack(self):
+        return 2
 
 
 class Skeleton(Enemy):
@@ -113,6 +128,7 @@ class Spider(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.speed = 5
 
 
 class Rat(Enemy):
@@ -124,6 +140,7 @@ class Rat(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.speed = 5
 
 
 class Minotaur(Enemy):
@@ -135,6 +152,7 @@ class Minotaur(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.speed = 5
 
 
 class Knight(Enemy):
@@ -146,6 +164,7 @@ class Knight(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.speed = 5
 
 
 class Gargoyl(Enemy):
@@ -157,6 +176,7 @@ class Gargoyl(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.speed = 5
 
 
 class Demon(Enemy):
@@ -168,6 +188,7 @@ class Demon(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.speed = 5
 
 
 class Dragon(Enemy):
@@ -179,3 +200,4 @@ class Dragon(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.speed = 5

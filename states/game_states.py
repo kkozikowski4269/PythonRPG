@@ -1,4 +1,5 @@
 import msvcrt
+import random
 import re
 from enum import Enum
 from os import system
@@ -266,6 +267,7 @@ class RunningState:
 
     def display(self):
         self.game.player.current_area.print_area()
+        print(self.game.player.weapon)
 
     def check_events(self, user_input):
         self.game.player.move(RunningInputs[user_input].value)
@@ -310,7 +312,7 @@ class MenuState:
 
 """
 ========================================================================================================================
-BATTLE STATE
+BATTLE STATES
 ========================================================================================================================
 """
 
@@ -324,13 +326,76 @@ class BattleState:
 
     def get_user_input(self):
         input()
-        self.enemy.state = EnemyUnspawnedState(self.enemy)
         self.player.observers.remove(self.enemy)
-        self.game.state = RunningState(self.game)
-        self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
+        if self.enemy.speed > self.player.speed:
+            self.game.state = EnemyTurnBattleState(self.game, self.enemy)
+        elif self.enemy.speed < self.player.speed:
+            self.game.state = PlayerTurnBattleState(self.game, self.enemy)
+        else:
+            self.game.state = random.choice(
+                (EnemyTurnBattleState(self.game, self.enemy), PlayerTurnBattleState(self.game, self.enemy))
+            )
 
     def display(self):
+        print(f'You are attacked by: {self.enemy.type}')
         print(self.enemy.image)
+        print('(Enter to continue)')
+
+
+class EnemyTurnBattleState:
+    def __init__(self, game, enemy):
+        self.game = game
+        self.player = self.game.player
+        self.enemy = enemy
+
+    def get_user_input(self):
+        damage = self.enemy.main_attack()
+        print(f'{self.enemy.type} hits you for {damage}')
+        self.player.hp -= damage
+        input()
+        self.player.check_health()
+        if self.player.is_alive():
+            self.game.state = PlayerTurnBattleState(self.game, self.enemy)
+
+    def display(self):
+        print(f'{self.enemy.type} HP: {self.enemy.hp}')
+        print(self.enemy.image)
+        print(f'{self.player.name} HP: {self.player.hp}')
+
+
+class PlayerTurnBattleState:
+    def __init__(self, game, enemy):
+        self.game = game
+        self.player = self.game.player
+        self.enemy = enemy
+
+    def get_user_input(self):
+        attack = input('>>>')
+        if attack not in ('1', '2'):
+            return
+
+        damage = 0
+        if attack == '1':
+            damage = self.player.main_attack()
+        elif attack == '2':
+            damage = self.player.alt_attack()
+
+        print(f'You hit the {self.enemy.type} for {damage}')
+        self.enemy.hp -= damage
+        input()
+        self.enemy.check_health()
+        if self.enemy.is_alive():
+            self.game.state = EnemyTurnBattleState(self.game, self.enemy)
+        else:
+            self.game.state = RunningState(self.game)
+            self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
+
+    def display(self):
+        print(f'{self.enemy.type} HP: {self.enemy.hp}')
+        print(self.enemy.image)
+        print(f'{self.player.name} HP: {self.player.hp}')
+        print(f'1) Main attack\n2) Alt Attack')
+
 
 """
 ========================================================================================================================

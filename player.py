@@ -10,6 +10,14 @@ class Player:
         self.x = 0
         self.y = 0
         self.observers = []
+        self.weapon = None
+        self.hp = 10
+        self.strength = 1
+        self.dexterity = 1
+        self.wisdom = 1
+        self.defense = 1
+        self.special_defense = 1
+        self.speed = 1
 
     def check_health(self):
         self.state.check_health()
@@ -57,6 +65,12 @@ class Player:
     def __str__(self):
         return 'P'
 
+    def main_attack(self):
+        return self.weapon.main_attack()
+
+    def alt_attack(self):
+        return self.weapon.alt_attack()
+
 
 class Knight(Player):
     def __init__(self):
@@ -67,6 +81,7 @@ class Knight(Player):
         self.dexterity = 5
         self.defense = 5
         self.special_defense = 4
+        self.speed = 5
 
 
 class Warrior(Player):
@@ -78,6 +93,7 @@ class Warrior(Player):
         self.dexterity = 1
         self.defense = 3
         self.special_defense = 1
+        self.speed = 5
 
 
 class Wizard(Player):
@@ -89,6 +105,7 @@ class Wizard(Player):
         self.dexterity = 3
         self.defense = 3
         self.special_defense = 6
+        self.speed = 5
 
 
 class Rogue(Player):
@@ -100,3 +117,4 @@ class Rogue(Player):
         self.dexterity = 10
         self.defense = 3
         self.special_defense = 2
+        self.speed = 5

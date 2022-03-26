@@ -4,7 +4,7 @@ class PlayerAliveState:
 
     def check_health(self):
         if self.player.hp <= 0:
-            self.player.set_state(PlayerDeadState(self.player))
+            self.player.state = PlayerDeadState(self.player)
 
     def is_alive(self):
         return True
