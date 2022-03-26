@@ -267,7 +267,6 @@ class RunningState:
 
     def display(self):
         self.game.player.current_area.print_area()
-        print(self.game.player.weapon)
 
     def check_events(self, user_input):
         self.game.player.move(RunningInputs[user_input].value)
@@ -288,26 +287,49 @@ class MenuState:
         util.play_music('menu_song.wav')
 
     def get_user_input(self):
-        user_input = msvcrt.getch().decode()
-        if user_input == 'm':
-            self.game.state = RunningState(self.game)
-        if user_input == 'x':
-            self.game.state = IntroState(self.game)
-        if user_input == 's':
+        user_input = input('>>>')
+        if user_input == '2':
+            self.game.state = SelectWeaponState(self.game)
+        elif user_input == '3':
             file_name = f'{self.game.save_file_name}.bin'
             self.game.save_manager.save_game(self.game, file_name)
-        if user_input == 'q':
+            input('Game saved! (Enter to continue)')
+        elif user_input == '4':
             self.game.state = SettingsState(self.game)
-
+        elif user_input == '5':
+            self.game.state = RunningState(self.game)
+        elif user_input == '6':
+            self.game.state = IntroState(self.game)
 
     def display(self):
-        print(self.game.player.name)
-        print(type(self.game.player))
-        print('Paused')
-        print('Press m key to resume')
-        print('Press s key to save')
-        print('press x key to quit')
-        print('press q to open settings menu')
+        print('\t\t(Paused)\n')
+        print(f'\tName: {self.player.name}')
+        print(f'\tClass: {self.player.type}')
+        print(f'\tWeapon: {self.player.weapon.name}')
+        print(util.get_image('images/menu/pause_menu.txt'))
+
+
+class SelectWeaponState:
+    def __init__(self, game):
+        self.game = game
+        self.player = self.game.player
+        self.previous_state = game.state
+
+    def get_user_input(self):
+        user_input = input('>>>')
+        if user_input.lower() == 'exit':
+            self.game.state = self.previous_state
+        elif re.match('[1-9]+', user_input):
+            if int(user_input) - 1 < len(self.player.weapon_inventory):
+                self.player.weapon = self.player.weapon_inventory[int(user_input) - 1]
+                input(f'You have equipped: {self.player.weapon.name}\n(Enter to continue)')
+
+    def display(self):
+        print(f'\tCurrent weapon: {self.player.weapon.name}\n')
+        print('\tWeapons:\n')
+        for i, weapon in enumerate(self.player.weapon_inventory):
+            print(f'\t{i + 1}) {weapon.name}')
+        print('\n\t(Enter "exit" to go back)')
 
 
 """
@@ -370,15 +392,18 @@ class PlayerTurnBattleState:
         self.enemy = enemy
 
     def get_user_input(self):
-        attack = input('>>>')
-        if attack not in ('1', '2'):
+        choice = input('>>>')
+        if choice not in ('1', '2', '3'):
             return
 
         damage = 0
-        if attack == '1':
+        if choice == '1':
             damage = self.player.main_attack()
-        elif attack == '2':
+        elif choice == '2':
             damage = self.player.alt_attack()
+        elif choice == '3':
+            self.game.state = BattleMenuState(self.game)
+            return
 
         print(f'You hit the {self.enemy.type} for {damage}')
         self.enemy.hp -= damage
@@ -394,7 +419,7 @@ class PlayerTurnBattleState:
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
         print(self.enemy.image)
         print(f'{self.player.name} HP: {self.player.hp}')
-        print(f'1) Main attack\n2) Alt Attack')
+        print(f'1) Main attack\n2) Alt Attack\n3) Menu')
 
 
 """
@@ -407,12 +432,19 @@ BATTLE MENU STATE (MENU WHILE IN BATTLE)
 class BattleMenuState:
     def __init__(self, game):
         self.game = game
+        self.previous_state = game.state
 
     def get_user_input(self):
-        pass
+        user_input = input('>>>')
+        if user_input == '2':
+            self.game.state = SelectWeaponState(self.game)
+        elif user_input == '3':
+            self.game.state = SettingsState(self.game)
+        elif user_input == '4':
+            self.game.state = self.previous_state
 
     def display(self):
-        print("In battle menu state")
+        print(util.get_image('images/menu/battle/battle_menu.txt'))
 
 
 """

@@ -1,5 +1,6 @@
         ====================
-        1) Attack
-        2) Item
-        3) Run
+        1) Use Item
+        2) Change Weapon
+        3) Settings
+        4) Resume
         ====================

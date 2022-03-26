@@ -1,9 +1,0 @@
-                Items
-        =======================
-        1) Health Potion
-        2) Strength Potion
-        3) Wisdom Potion
-        4) Dexterity Potion
-        5) Poison Potion
-        6) Exit
-        =======================

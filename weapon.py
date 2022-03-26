@@ -16,6 +16,7 @@ class Weapon:
 class Sword(Weapon):
     def __init__(self):
         super().__init__()
+        self.name = 'Sword'
 
     def main_attack(self):
         return 2
@@ -27,6 +28,7 @@ class Sword(Weapon):
 class Hammer(Weapon):
     def __init__(self):
         super().__init__()
+        self.name = 'Hammer'
 
     def main_attack(self):
         return 10
@@ -38,6 +40,7 @@ class Hammer(Weapon):
 class Dagger(Weapon):
     def __init__(self):
         super().__init__()
+        self.name = 'Dagger'
 
     def main_attack(self):
         return 10
@@ -49,6 +52,7 @@ class Dagger(Weapon):
 class Staff(Weapon):
     def __init__(self):
         super().__init__()
+        self.name = 'Staff'
 
     def main_attack(self):
         return 10

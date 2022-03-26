@@ -23,5 +23,6 @@ class PlayerFactory:
         if weapon is not None:
             weapon.level = 1
             player_type.weapon = weapon
+            player_type.weapon_inventory.append(weapon)
 
         return player_type

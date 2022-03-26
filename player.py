@@ -3,6 +3,7 @@ from states.player_states import PlayerAliveState, PlayerDeadState
 
 class Player:
     def __init__(self):
+        self.type = self.__class__.__name__
         self.name = None
         self.state = PlayerAliveState(self)
         self.current_location = None
@@ -11,6 +12,8 @@ class Player:
         self.y = 0
         self.observers = []
         self.weapon = None
+        self.item_inventory = []
+        self.weapon_inventory = []
         self.hp = 10
         self.strength = 1
         self.dexterity = 1

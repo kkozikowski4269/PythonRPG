@@ -1,7 +1,8 @@
         ====================
-        1) Use Health Potion
+        1) Use Item
         2) Change Weapon
         3) Save
-        4) Resume
-        5) Quit Game
+        4) Settings
+        5) Resume
+        6) Quit Game
         ====================
