@@ -45,6 +45,6 @@ class Door:
         self.x = x
         self.y = y
 
-    def do_action(self, player, game):
+    def observe_player(self, player, game):
         if player.is_colliding(self):
             self.use_door(player)

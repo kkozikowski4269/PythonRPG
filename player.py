@@ -52,7 +52,7 @@ class Player:
 
     def notify_observers(self, game):
         for observer in self.observers:
-            observer.do_action(self, game)
+            observer.observe_player(self, game)
 
     def __str__(self):
         return 'P'

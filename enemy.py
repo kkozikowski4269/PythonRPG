@@ -82,7 +82,7 @@ class Enemy:
     def attack(self):
         pass
 
-    def do_action(self, player, game):
+    def observe_player(self, player, game):
         if self.state.is_alive():
             if self.is_colliding(player):
                 game.state = BattleState(game, self)
