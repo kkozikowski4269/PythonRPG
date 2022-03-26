@@ -321,14 +321,20 @@ class SelectWeaponState:
             self.game.state = self.previous_state
         elif re.match('[1-9]+', user_input):
             if int(user_input) - 1 < len(self.player.weapon_inventory):
-                self.player.weapon = self.player.weapon_inventory[int(user_input) - 1]
-                input(f'You have equipped: {self.player.weapon.name}\n(Enter to continue)')
+                if self.player.weapon_inventory[int(user_input) - 1] is self.player.weapon:
+                    input(f'This weapon is already equipped!\n(Enter to continue)')
+                else:
+                    self.player.weapon = self.player.weapon_inventory[int(user_input) - 1]
+                    input(f'You have equipped: {self.player.weapon.name}\n(Enter to continue)')
 
     def display(self):
         print(f'\tCurrent weapon: {self.player.weapon.name}\n')
         print('\tWeapons:\n')
         for i, weapon in enumerate(self.player.weapon_inventory):
-            print(f'\t{i + 1}) {weapon.name}')
+            to_print = f'\t{i + 1}) {weapon.name} - Power: {weapon.power}'
+            if weapon is self.player.weapon:
+                to_print += ' (Equipped)'
+            print(to_print)
         print('\n\t(Enter "exit" to go back)')
 
 
@@ -412,14 +418,32 @@ class PlayerTurnBattleState:
         if self.enemy.is_alive():
             self.game.state = EnemyTurnBattleState(self.game, self.enemy)
         else:
-            self.game.state = RunningState(self.game)
-            self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
+            self.game.state = BattleEndState(self.game, self.enemy)
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
         print(self.enemy.image)
         print(f'{self.player.name} HP: {self.player.hp}')
         print(f'1) Main attack\n2) Alt Attack\n3) Menu')
+
+
+class BattleEndState:
+    def __init__(self, game, enemy):
+        self.game = game
+        self.player = self.game.player
+        self.enemy = enemy
+
+    def get_user_input(self):
+        input('\t(Enter to continue)')
+        self.game.state = RunningState(self.game)
+        self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
+
+    def display(self):
+        print(f'\tYou defeated the {self.enemy.type} and received:')
+        for weapon in self.enemy.weapon_inventory:
+            if weapon is not None:
+                print(f'\t{weapon.name} - Power: {weapon.power}')
+                self.player.weapon_inventory.append(weapon)
 
 
 """

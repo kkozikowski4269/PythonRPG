@@ -2,6 +2,8 @@ class EnemySpawnedState:
     def __init__(self, enemy):
         self.enemy = enemy
         self.enemy.set_icon('E')
+        self.enemy.hp = self.enemy.max_hp
+        self.enemy.fill_inventories()
 
     def check_health(self):
         if self.enemy.hp <= 0:

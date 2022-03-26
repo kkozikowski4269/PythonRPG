@@ -1,8 +1,7 @@
 class Weapon:
-    def __init__(self):
+    def __init__(self, power):
         self.name = None
-        self.power = 0
-        self.level = 0
+        self.power = power
         self.primary_type = None
         self.secondary_type = None
 
@@ -14,8 +13,8 @@ class Weapon:
 
 
 class Sword(Weapon):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, power):
+        super().__init__(power)
         self.name = 'Sword'
 
     def main_attack(self):
@@ -26,8 +25,8 @@ class Sword(Weapon):
 
 
 class Hammer(Weapon):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, power):
+        super().__init__(power)
         self.name = 'Hammer'
 
     def main_attack(self):
@@ -38,8 +37,8 @@ class Hammer(Weapon):
 
 
 class Dagger(Weapon):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, power):
+        super().__init__(power)
         self.name = 'Dagger'
 
     def main_attack(self):
@@ -50,8 +49,8 @@ class Dagger(Weapon):
 
 
 class Staff(Weapon):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, power):
+        super().__init__(power)
         self.name = 'Staff'
 
     def main_attack(self):

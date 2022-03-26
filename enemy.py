@@ -2,6 +2,7 @@ import random
 
 from states.enemy_states import EnemyUnspawnedState
 from states.game_states import BattleState
+from weapon import Sword, Staff
 
 
 class Enemy:
@@ -12,7 +13,8 @@ class Enemy:
         self.y = 0
         self.x_spawn = 0
         self.y_spawn = 0
-        self.hp = 10
+        self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 1
         self.dexterity = 1
         self.wisdom = 1
@@ -24,6 +26,8 @@ class Enemy:
         self.icon = 'E'
         self.image = None
         self.battle_music = None
+        self.inventory = []
+        self.weapon_inventory = []
 
     def __str__(self):
         return self.icon
@@ -106,23 +110,32 @@ class Enemy:
     def alt_attack(self):
         return 2
 
+    def fill_inventories(self):
+        pass
+
 
 class Skeleton(Enemy):
     def __init__(self):
         super().__init__()
         self.type = self.__class__.__name__
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.weapon_inventory = []
+
+    def fill_inventories(self):
+        self.weapon_drops = [None, Sword(1), Sword(2), Sword(3), Staff(1)]
+        self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 10, 2, 13], k=1)
+
 
 
 class Spider(Enemy):
     def __init__(self):
         super().__init__()
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -134,7 +147,7 @@ class Spider(Enemy):
 class Rat(Enemy):
     def __init__(self):
         super().__init__()
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -146,7 +159,7 @@ class Rat(Enemy):
 class Minotaur(Enemy):
     def __init__(self):
         super().__init__()
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -158,7 +171,7 @@ class Minotaur(Enemy):
 class Knight(Enemy):
     def __init__(self):
         super().__init__()
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -170,7 +183,7 @@ class Knight(Enemy):
 class Gargoyl(Enemy):
     def __init__(self):
         super().__init__()
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -182,7 +195,7 @@ class Gargoyl(Enemy):
 class Demon(Enemy):
     def __init__(self):
         super().__init__()
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -194,7 +207,7 @@ class Demon(Enemy):
 class Dragon(Enemy):
     def __init__(self):
         super().__init__()
-        self.hp = 10
+        self.max_hp = 10
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
