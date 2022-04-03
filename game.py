@@ -2,6 +2,7 @@ import json
 import os
 
 from area import Area
+from hud import HUD
 from location import Location
 from save_manager import SaveManager
 from states.game_states import *
@@ -16,14 +17,13 @@ class Game:
         self.locations = {}
         self.save_manager = SaveManager('save_files/')
         self.volume = 1
-
+        self.hud = HUD(self)
 
     def set_locations(self):
         for file in os.listdir('locations'):
             with open(f'locations/{file}', encoding='utf-8') as json_file:
                 area_json_file = json.load(json_file)
                 location = Location(name=file[:-5])
-
                 for area_json in area_json_file:
                     new_area = Area(area_json)
                     location.add_area(new_area)

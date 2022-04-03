@@ -136,6 +136,7 @@ class Spider(Enemy):
     def __init__(self):
         super().__init__()
         self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -148,6 +149,7 @@ class Rat(Enemy):
     def __init__(self):
         super().__init__()
         self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -160,6 +162,7 @@ class Minotaur(Enemy):
     def __init__(self):
         super().__init__()
         self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -172,6 +175,7 @@ class Knight(Enemy):
     def __init__(self):
         super().__init__()
         self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -184,6 +188,7 @@ class Gargoyl(Enemy):
     def __init__(self):
         super().__init__()
         self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -196,6 +201,7 @@ class Demon(Enemy):
     def __init__(self):
         super().__init__()
         self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
@@ -208,6 +214,7 @@ class Dragon(Enemy):
     def __init__(self):
         super().__init__()
         self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1

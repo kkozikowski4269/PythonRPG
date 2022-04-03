@@ -6,3 +6,5 @@ class Location:
 
     def add_area(self, new_area):
         self.areas[new_area.name] = new_area
+
+

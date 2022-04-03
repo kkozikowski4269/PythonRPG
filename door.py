@@ -48,3 +48,4 @@ class Door:
     def observe_player(self, player, game):
         if player.is_colliding(self):
             self.use_door(player)
+            game.hud.area = player.current_area

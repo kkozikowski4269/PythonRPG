@@ -1,7 +1,7 @@
 [
   {
     "x": 0,
-    "y": 0,
+    "y": 1,
     "symbol": "══",
     "name": "A2",
     "code": "A2",
@@ -11,7 +11,7 @@
     ]
   },
   {
-    "x": 0,
+    "x": 1,
     "y": 0,
     "symbol": "╔═",
     "name": "B1",
@@ -22,9 +22,9 @@
     ]
   },
   {
-    "x": 0,
-    "y": 0,
-    "symbol": "═╣",
+    "x": 1,
+    "y": 1,
+    "symbol": "╣ ",
     "name": "B2",
     "code": "B2",
     "image": "images/locations/location1/B2.txt",

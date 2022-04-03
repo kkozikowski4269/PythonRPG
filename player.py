@@ -14,7 +14,8 @@ class Player:
         self.weapon = None
         self.item_inventory = []
         self.weapon_inventory = []
-        self.hp = 10
+        self.max_hp = 10
+        self.hp = self.max_hp
         self.strength = 1
         self.dexterity = 1
         self.wisdom = 1
@@ -78,7 +79,8 @@ class Player:
 class Knight(Player):
     def __init__(self):
         super().__init__()
-        self.hp = 200
+        self.max_hp = 200
+        self.hp = self.max_hp
         self.strength = 5
         self.wisdom = 5
         self.dexterity = 5
@@ -90,7 +92,8 @@ class Knight(Player):
 class Warrior(Player):
     def __init__(self):
         super().__init__()
-        self.hp = 150
+        self.max_hp = 150
+        self.hp = self.max_hp
         self.strength = 13
         self.wisdom = 1
         self.dexterity = 1
@@ -102,7 +105,8 @@ class Warrior(Player):
 class Wizard(Player):
     def __init__(self):
         super().__init__()
-        self.hp = 150
+        self.max_hp = 150
+        self.hp = self.max_hp
         self.strength = 3
         self.wisdom = 10
         self.dexterity = 3
@@ -114,7 +118,8 @@ class Wizard(Player):
 class Rogue(Player):
     def __init__(self):
         super().__init__()
-        self.hp = 150
+        self.max_hp = 150
+        self.hp = self.max_hp
         self.strength = 3
         self.wisdom = 3
         self.dexterity = 10

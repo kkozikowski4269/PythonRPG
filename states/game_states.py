@@ -75,6 +75,8 @@ class NewGameState:
                 self.game.player.current_location = self.game.locations['location1']
                 self.game.player.current_area = self.game.locations['location1'].areas['A2']
                 self.game.player.set_position(1, 5)
+                self.game.hud.location = self.game.player.current_location
+                self.game.hud.area = self.game.player.current_area
                 self.game.player.current_area.enter(self.game.player, self.game.player.x, self.game.player.y)
                 file_name = f'{self.game.save_file_name}.bin'
                 self.game.save_manager.save_game(self.game, file_name)
@@ -147,6 +149,7 @@ class LoadGameState:
         self.game.player = game_load.player
         self.game.locations = game_load.locations
         self.game.volume = game_load.volume
+        self.game.hud = game_load.hud
         util.set_volume(self.game.volume)
 
 
@@ -248,6 +251,7 @@ class RunningState:
 
     def __init__(self, game):
         self.game = game
+        self.player = self.game.player
         util.play_music('main_song.wav')
 
     def get_user_input(self):
@@ -266,11 +270,13 @@ class RunningState:
             pass
 
     def display(self):
-        self.game.player.current_area.print_area()
+        self.game.hud.update_map()
+        self.game.hud.print_map()
+        self.player.current_area.print_area()
 
     def check_events(self, user_input):
-        self.game.player.move(RunningInputs[user_input].value)
-        self.game.player.notify_observers(self.game)
+        self.player.move(RunningInputs[user_input].value)
+        self.player.notify_observers(self.game)
 
 
 """

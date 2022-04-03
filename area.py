@@ -12,11 +12,12 @@ class Area:
     DOOR_SYMBOLS = ('u', 'r', 'd', 'l')
 
     def __init__(self, area_json):
-        self.width = area_json['x']
-        self.height = area_json['y']
+        self.x = area_json['x']
+        self.y = area_json['y']
         self.name = area_json['name']
         self.code = area_json['code']
         self.image_path = area_json['image']
+        self.symbol = area_json['symbol']
         self.layout = []
         self.doors = {}
         self.area_json = area_json
