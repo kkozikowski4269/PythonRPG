@@ -18,7 +18,8 @@
     "code": "B1",
     "image": "images/locations/location1/B1.txt",
     "doors": [
-      {"d":  "B2"}
+      {"d":  "B2"},
+      {"r":  "C1"}
     ]
   },
   {
@@ -30,8 +31,92 @@
     "image": "images/locations/location1/B2.txt",
     "doors": [
       {"u":  "B1"},
-      {"d":  "B2"},
+      {"d":  "B3"},
       {"l":  "A2"}
+    ]
+  },
+  {
+    "x": 1,
+    "y": 2,
+    "symbol": "╠═",
+    "name": "B3",
+    "code": "B3",
+    "image": "images/locations/location1/B3.txt",
+    "doors": [
+      {"u":  "B2"},
+      {"d":  "B4"},
+      {"r":  "C3"}
+    ]
+  },
+  {
+    "x": 1,
+    "y": 3,
+    "symbol": "╚═",
+    "name": "B4",
+    "code": "B4",
+    "image": "images/locations/location1/B4.txt",
+    "doors": [
+      {"u":  "B3"},
+      {"r":  "C4"}
+    ]
+  },
+  {
+    "x": 2,
+    "y": 0,
+    "symbol": "══",
+    "name": "C1",
+    "code": "C1",
+    "image": "images/locations/location1/C1.txt",
+    "doors": [
+      {"l":  "B1"},
+      {"r":  "D1"}
+    ]
+  },
+  {
+    "x": 2,
+    "y": 2,
+    "symbol": "══",
+    "name": "C3",
+    "code": "C3",
+    "image": "images/locations/location1/C3.txt",
+    "doors": [
+      {"l":  "B3"},
+      {"r":  "D3"}
+    ]
+  },
+  {
+    "x": 2,
+    "y": 3,
+    "symbol": "══",
+    "name": "C4",
+    "code": "C4",
+    "image": "images/locations/location1/C4.txt",
+    "doors": [
+      {"l":  "B4"}
+    ]
+  },
+  {
+    "x": 3,
+    "y": 0,
+    "symbol": "╗ ",
+    "name": "D1",
+    "code": "D1",
+    "image": "images/locations/location1/D1.txt",
+    "doors": [
+      {"l":  "C1"},
+      {"d": "D2"}
+    ]
+  },
+  {
+    "x": 3,
+    "y": 1,
+    "symbol": "║ ",
+    "name": "D2",
+    "code": "D2",
+    "image": "images/locations/location1/D2.txt",
+    "doors": [
+      {"u":  "D1"},
+      {"d": "D3"}
     ]
   }
 ]
