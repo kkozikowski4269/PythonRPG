@@ -4,8 +4,8 @@ import util
 
 class EnemyFactory:
     WEAK_ENEMY_TYPES = ('R', 'S', 's')
-    STRONG_ENEMY_TYPES = ('G', 'K', 'M')
-    MINIBOSS_TYPES = ('d',)
+    STRONG_ENEMY_TYPES = ('G', 'K', 'M', 'n')
+    MINIBOSS_TYPES = ()
     BOSS_TYPES = ('D',)
     ALL_ENEMY_TYPES = WEAK_ENEMY_TYPES + STRONG_ENEMY_TYPES + MINIBOSS_TYPES + BOSS_TYPES
 
@@ -13,7 +13,7 @@ class EnemyFactory:
         if enemy_type == 'D':
             new_enemy = enemy.Dragon()
             new_enemy.battle_music = 'boss_song.wav'
-        elif enemy_type == 'd':
+        elif enemy_type == 'n':
             new_enemy = enemy.Demon()
             new_enemy.battle_music = 'miniboss_song.wav'
         elif enemy_type == 'G':

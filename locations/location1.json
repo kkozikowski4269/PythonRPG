@@ -118,5 +118,113 @@
       {"u":  "D1"},
       {"d": "D3"}
     ]
+  },
+  {
+    "x": 3,
+    "y": 2,
+    "symbol": "╩═",
+    "name": "D3",
+    "code": "D3",
+    "image": "images/locations/location1/D3.txt",
+    "doors": [
+      {"u":  "D2"},
+      {"r": "E3"},
+      {"l":  "C3"}
+    ]
+  },
+  {
+    "x": 4,
+    "y": 2,
+    "symbol": "╦═",
+    "name": "E3",
+    "code": "E3",
+    "image": "images/locations/location1/E3.txt",
+    "doors": [
+      {"r":  "F3"},
+      {"l":  "D3"},
+      {"d": "E4"}
+    ]
+  },
+  {
+    "x": 4,
+    "y": 3,
+    "symbol": "║ ",
+    "name": "E4",
+    "code": "E4",
+    "image": "images/locations/location1/E4.txt",
+    "doors": [
+      {"u":  "E3"},
+      {"d": "E5"}
+    ]
+  },
+  {
+    "x": 4,
+    "y": 4,
+    "symbol": "╚═",
+    "name": "E5",
+    "code": "E5",
+    "image": "images/locations/location1/E5.txt",
+    "doors": [
+      {"u":  "E4"},
+      {"r": "F5"}
+    ]
+  },
+  {
+    "x": 5,
+    "y": 2,
+    "symbol": "══",
+    "name": "F3",
+    "code": "F3",
+    "image": "images/locations/location1/F3.txt",
+    "doors": [
+      {"l":  "E3"},
+      {"r": "G3"}
+    ]
+  },
+  {
+    "x": 5,
+    "y": 4,
+    "symbol": "══",
+    "name": "F5",
+    "code": "F5",
+    "image": "images/locations/location1/F5.txt",
+    "doors": [
+      {"l":  "E5"},
+      {"r": "G5"}
+    ]
+  },
+  {
+    "x": 6,
+    "y": 1,
+    "symbol": "║ ",
+    "name": "G2",
+    "code": "G2",
+    "image": "images/locations/location1/G2.txt",
+    "doors": [
+      {"d": "G3"}
+    ]
+  },
+  {
+    "x": 6,
+    "y": 2,
+    "symbol": "╝ ",
+    "name": "G3",
+    "code": "G3",
+    "image": "images/locations/location1/G3.txt",
+    "doors": [
+      {"u":  "G2"},
+      {"l": "F3"}
+    ]
+  },
+  {
+    "x": 6,
+    "y": 4,
+    "symbol": "══",
+    "name": "G5",
+    "code": "G5",
+    "image": "images/locations/location1/G5.txt",
+    "doors": [
+      {"l": "F5"}
+    ]
   }
 ]
