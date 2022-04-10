@@ -393,6 +393,12 @@ class EnemyTurnBattleState:
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
+        print(f'Strength: {self.enemy.strength}')
+        print(f'Wisdom: {self.enemy.wisdom}')
+        print(f'Dexterity: {self.enemy.dexterity}')
+        print(f'Defense: {self.enemy.defense}')
+        print(f'S Defense: {self.enemy.special_defense}')
+        print(f'Speed: {self.enemy.speed}')
         print(self.enemy.image)
         print(f'{self.player.name} HP: {self.player.hp}')
 
@@ -428,6 +434,12 @@ class PlayerTurnBattleState:
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
+        print(f'Strength: {self.enemy.strength}')
+        print(f'Wisdom: {self.enemy.wisdom}')
+        print(f'Dexterity: {self.enemy.dexterity}')
+        print(f'Defense: {self.enemy.defense}')
+        print(f'S Defense: {self.enemy.special_defense}')
+        print(f'Speed: {self.enemy.speed}')
         print(self.enemy.image)
         print(f'{self.player.name} HP: {self.player.hp}')
         print(f'1) Main attack\n2) Alt Attack\n3) Menu')

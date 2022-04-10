@@ -45,15 +45,15 @@ class Area:
                         self.doors[c].set_position(x, y)
                         c = ' '
                     elif c == 'E':
-                        enemy = self.create_random_strong_enemy()
+                        enemy = self.create_random_strong_enemy(int(random.choice(self.area_json["enemy levels"])))
                         enemy.set_spawn_position(x, y)
                         c = ' '
                     elif c == 'e':
-                        enemy = self.create_random_weak_enemy()
+                        enemy = self.create_random_weak_enemy(int(random.choice(self.area_json["enemy levels"])))
                         enemy.set_spawn_position(x, y)
                         c = ' '
                     elif c in EnemyFactory.ALL_ENEMY_TYPES:
-                        enemy = self.create_enemy(c)
+                        enemy = self.create_enemy(c, int(random.choice(self.area_json["enemy levels"])))
                         enemy.set_spawn_position(x, y)
                         c = ' '
                     if c != '\n':
@@ -83,23 +83,23 @@ class Area:
         for row in self.layout:
             print(*row, sep="")
 
-    def create_enemy(self, enemy_type):
+    def create_enemy(self, enemy_type, level):
         enemy_factory = EnemyFactory()
-        enemy = enemy_factory.get(enemy_type)
+        enemy = enemy_factory.get(enemy_type, level)
         enemy.area = self
         self.enemies.append(enemy)
         return enemy
 
-    def create_random_weak_enemy(self):
+    def create_random_weak_enemy(self, level):
         enemy_factory = EnemyFactory()
-        enemy = enemy_factory.get(random.choice(EnemyFactory.WEAK_ENEMY_TYPES))
+        enemy = enemy_factory.get(random.choice(EnemyFactory.WEAK_ENEMY_TYPES), level)
         enemy.area = self
         self.enemies.append(enemy)
         return enemy
 
-    def create_random_strong_enemy(self):
+    def create_random_strong_enemy(self, level):
         enemy_factory = EnemyFactory()
-        enemy = enemy_factory.get(random.choice(EnemyFactory.STRONG_ENEMY_TYPES))
+        enemy = enemy_factory.get(random.choice(EnemyFactory.STRONG_ENEMY_TYPES), level)
         enemy.area = self
         self.enemies.append(enemy)
         return enemy

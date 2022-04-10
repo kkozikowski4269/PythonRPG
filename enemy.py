@@ -6,9 +6,10 @@ from weapon import Sword, Staff
 
 
 class Enemy:
-    def __init__(self):
+    def __init__(self, level):
         self.type = self.__class__.__name__
         self.state = EnemyUnspawnedState(self)
+        self.level = level
         self.x = 0
         self.y = 0
         self.x_spawn = 0
@@ -113,10 +114,18 @@ class Enemy:
     def fill_inventories(self):
         pass
 
+    def scale_stats(self):
+        self.max_hp = self.max_hp * self.level
+        self.strength = self.strength * self.level
+        self.dexterity = self.dexterity * self.level
+        self.wisdom = self.wisdom * self.level
+        self.defense = self.defense * self.level
+        self.special_defense = self.special_defense * self.level
+
 
 class Skeleton(Enemy):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, level):
+        super().__init__(level)
         self.type = self.__class__.__name__
         self.max_hp = 10
         self.strength = 3
@@ -131,93 +140,92 @@ class Skeleton(Enemy):
         self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 10, 2, 13], k=1)
 
 
-
 class Spider(Enemy):
-    def __init__(self):
-        super().__init__()
-        self.max_hp = 10
+    def __init__(self, level):
+        super().__init__(level)
+        self.max_hp = 12
         self.hp = self.max_hp
         self.strength = 3
         self.dexterity = 1
         self.wisdom = 1
-        self.defense = 2
+        self.defense = 1
         self.special_defense = 1
-        self.speed = 5
+        self.speed = 7
 
 
 class Rat(Enemy):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, level):
+        super().__init__(level)
         self.max_hp = 10
         self.hp = self.max_hp
-        self.strength = 3
+        self.strength = 2
         self.dexterity = 1
         self.wisdom = 1
         self.defense = 2
-        self.special_defense = 1
+        self.special_defense = 2
         self.speed = 5
 
 
 class Minotaur(Enemy):
-    def __init__(self):
-        super().__init__()
-        self.max_hp = 10
+    def __init__(self, level):
+        super().__init__(level)
+        self.max_hp = 35
         self.hp = self.max_hp
-        self.strength = 3
-        self.dexterity = 1
+        self.strength = 8
+        self.dexterity = 4
         self.wisdom = 1
-        self.defense = 2
-        self.special_defense = 1
+        self.defense = 7
+        self.special_defense = 3
         self.speed = 5
 
 
 class Knight(Enemy):
-    def __init__(self):
-        super().__init__()
-        self.max_hp = 10
+    def __init__(self, level):
+        super().__init__(level)
+        self.max_hp = 30
         self.hp = self.max_hp
-        self.strength = 3
-        self.dexterity = 1
-        self.wisdom = 1
-        self.defense = 2
-        self.special_defense = 1
-        self.speed = 5
+        self.strength = 5
+        self.dexterity = 5
+        self.wisdom = 3
+        self.defense = 5
+        self.special_defense = 4
+        self.speed = 7
 
 
-class Gargoyl(Enemy):
-    def __init__(self):
-        super().__init__()
-        self.max_hp = 10
+class Gargoyle(Enemy):
+    def __init__(self, level):
+        super().__init__(level)
+        self.max_hp = 50
         self.hp = self.max_hp
-        self.strength = 3
-        self.dexterity = 1
+        self.strength = 8
+        self.dexterity = 3
         self.wisdom = 1
-        self.defense = 2
-        self.special_defense = 1
-        self.speed = 5
+        self.defense = 10
+        self.special_defense = 4
+        self.speed = 3
 
 
 class Demon(Enemy):
-    def __init__(self):
-        super().__init__()
-        self.max_hp = 10
+    def __init__(self, level):
+        super().__init__(level)
+        self.max_hp = 40
         self.hp = self.max_hp
-        self.strength = 3
-        self.dexterity = 1
-        self.wisdom = 1
+        self.strength = 6
+        self.dexterity = 4
+        self.wisdom = 8
         self.defense = 2
-        self.special_defense = 1
-        self.speed = 5
+        self.special_defense = 7
+        self.speed = 6
 
 
 class Dragon(Enemy):
-    def __init__(self):
-        super().__init__()
-        self.max_hp = 10
+    def __init__(self, level):
+        super().__init__(level)
+        self.max_hp = 80
         self.hp = self.max_hp
-        self.strength = 3
-        self.dexterity = 1
-        self.wisdom = 1
-        self.defense = 2
-        self.special_defense = 1
-        self.speed = 5
+        self.strength = 11
+        self.dexterity = 8
+        self.wisdom = 8
+        self.defense = 10
+        self.special_defense = 10
+        self.speed = 9

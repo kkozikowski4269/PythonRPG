@@ -8,7 +8,8 @@
     "image": "images/locations/location1/A2.txt",
     "doors": [
       {"r":  "B2"}
-    ]
+    ],
+    "enemy levels": [1]
   },
   {
     "x": 1,
@@ -20,7 +21,8 @@
     "doors": [
       {"d":  "B2"},
       {"r":  "C1"}
-    ]
+    ],
+    "enemy levels": [1]
   },
   {
     "x": 1,
@@ -33,7 +35,8 @@
       {"u":  "B1"},
       {"d":  "B3"},
       {"l":  "A2"}
-    ]
+    ],
+    "enemy levels": [1]
   },
   {
     "x": 1,
@@ -46,7 +49,8 @@
       {"u":  "B2"},
       {"d":  "B4"},
       {"r":  "C3"}
-    ]
+    ],
+    "enemy levels": [1]
   },
   {
     "x": 1,
@@ -58,7 +62,8 @@
     "doors": [
       {"u":  "B3"},
       {"r":  "C4"}
-    ]
+    ],
+    "enemy levels": [1,2]
   },
   {
     "x": 2,
@@ -70,7 +75,8 @@
     "doors": [
       {"l":  "B1"},
       {"r":  "D1"}
-    ]
+    ],
+    "enemy levels": [1,2]
   },
   {
     "x": 2,
@@ -82,7 +88,8 @@
     "doors": [
       {"l":  "B3"},
       {"r":  "D3"}
-    ]
+    ],
+    "enemy levels": [2]
   },
   {
     "x": 2,
@@ -93,7 +100,8 @@
     "image": "images/locations/location1/C4.txt",
     "doors": [
       {"l":  "B4"}
-    ]
+    ],
+    "enemy levels": [2]
   },
   {
     "x": 3,
@@ -105,7 +113,8 @@
     "doors": [
       {"l":  "C1"},
       {"d": "D2"}
-    ]
+    ],
+    "enemy levels": [2,3]
   },
   {
     "x": 3,
@@ -117,7 +126,8 @@
     "doors": [
       {"u":  "D1"},
       {"d": "D3"}
-    ]
+    ],
+    "enemy levels": [2,3]
   },
   {
     "x": 3,
@@ -130,7 +140,8 @@
       {"u":  "D2"},
       {"r": "E3"},
       {"l":  "C3"}
-    ]
+    ],
+    "enemy levels": [2,3]
   },
   {
     "x": 4,
@@ -143,7 +154,8 @@
       {"r":  "F3"},
       {"l":  "D3"},
       {"d": "E4"}
-    ]
+    ],
+    "enemy levels": [2,3,4]
   },
   {
     "x": 4,
@@ -155,7 +167,8 @@
     "doors": [
       {"u":  "E3"},
       {"d": "E5"}
-    ]
+    ],
+    "enemy levels": [2,3,4]
   },
   {
     "x": 4,
@@ -167,7 +180,8 @@
     "doors": [
       {"u":  "E4"},
       {"r": "F5"}
-    ]
+    ],
+    "enemy levels": [3]
   },
   {
     "x": 5,
@@ -179,7 +193,8 @@
     "doors": [
       {"l":  "E3"},
       {"r": "G3"}
-    ]
+    ],
+    "enemy levels": [3]
   },
   {
     "x": 5,
@@ -191,7 +206,8 @@
     "doors": [
       {"l":  "E5"},
       {"r": "G5"}
-    ]
+    ],
+    "enemy levels": [4]
   },
   {
     "x": 6,
@@ -202,7 +218,8 @@
     "image": "images/locations/location1/G2.txt",
     "doors": [
       {"d": "G3"}
-    ]
+    ],
+    "enemy levels": [5]
   },
   {
     "x": 6,
@@ -214,7 +231,8 @@
     "doors": [
       {"u":  "G2"},
       {"l": "F3"}
-    ]
+    ],
+    "enemy levels": [4]
   },
   {
     "x": 6,
@@ -225,6 +243,7 @@
     "image": "images/locations/location1/G5.txt",
     "doors": [
       {"l": "F5"}
-    ]
+    ],
+    "enemy levels": [4]
   }
 ]
