@@ -62,6 +62,14 @@ class Player:
     def is_alive(self):
         return self.state.is_alive()
 
+    def get_stat(self, stat):
+        if stat == 'strength':
+            return self.strength
+        elif stat == 'dexterity':
+            return self.dexterity
+        elif stat == 'wisdom':
+            return self.wisdom
+
     def notify_observers(self, game):
         for observer in self.observers:
             observer.observe_player(self, game)
@@ -70,10 +78,25 @@ class Player:
         return 'P'
 
     def main_attack(self):
-        return self.weapon.main_attack()
+        damage = self.weapon.main_attack()
+        if damage > 0:
+            if self.weapon.secondary_type is not None:
+                damage += (self.get_stat(self.weapon.secondary_type)*0.5) + (self.get_stat(self.weapon.primary_type)*0.75)
+            else:
+                damage += self.get_stat(self.weapon.primary_type)
+
+        return int(damage)
 
     def alt_attack(self):
-        return self.weapon.alt_attack()
+        damage = self.weapon.alt_attack()
+        if damage > 0:
+            if self.weapon.secondary_type is not None:
+                damage += (self.get_stat(self.weapon.secondary_type) * 0.5) + (
+                            self.get_stat(self.weapon.primary_type) * 0.75)
+            else:
+                damage += self.get_stat(self.weapon.primary_type)
+
+        return damage
 
 
 class Knight(Player):

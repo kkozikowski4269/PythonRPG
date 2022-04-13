@@ -3,6 +3,7 @@ import random
 import re
 from enum import Enum
 from os import system
+from time import sleep
 
 import util
 from factories.player_factory import PlayerFactory
@@ -80,6 +81,9 @@ class NewGameState:
                 self.game.player.current_area.enter(self.game.player, self.game.player.x, self.game.player.y)
                 file_name = f'{self.game.save_file_name}.bin'
                 self.game.save_manager.save_game(self.game, file_name)
+                self.loading_bar(0.35, 'Creating character...')
+                util.get_image(f'images/player/{player_type.type.lower()}.txt')
+                input('Press enter to continue...')
                 self.game.state = RunningState(self.game)
 
     def display(self):
@@ -89,7 +93,7 @@ class NewGameState:
             print(get_image('images/menu/character_choice_menu.txt'))
 
     def create_player_name(self):
-        player_name = ""
+        player_name = ''
 
         while len(player_name) < 1 or len(player_name) > 20:
             player_name = input('Enter your name: ')
@@ -103,6 +107,15 @@ class NewGameState:
             system('cls')
 
         return player_name
+
+    # lower s == faster speed
+    def loading_bar(self, s, loading_msg, char="|"):
+        print(loading_msg)
+        for i in range(51):
+            speed = random.uniform(0, s)
+            print("0%|" + str(char * i).ljust(50) + "|" + str(i * 2) + "%\r", end="")
+            sleep(speed)  # make loading bar move at a random/jumpy pace
+        print()
 
 
 """
@@ -422,9 +435,9 @@ class PlayerTurnBattleState:
         elif choice == '3':
             self.game.state = BattleMenuState(self.game)
             return
-
-        print(f'You hit the {self.enemy.type} for {damage}')
-        self.enemy.hp -= damage
+        modified_damage = int(damage*(10/(10+self.enemy.defense)))
+        print(f'You hit the {self.enemy.type} for {modified_damage}')
+        self.enemy.hp -= modified_damage
         input()
         self.enemy.check_health()
         if self.enemy.is_alive():
