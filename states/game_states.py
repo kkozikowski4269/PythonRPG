@@ -343,7 +343,6 @@ class MenuState:
             self.game.state = IntroState(self.game)
             self.game.reset()
 
-
     def display(self):
         print('\t\t(Paused)\n')
         print(f'\tName: {self.player.name}')
@@ -373,6 +372,7 @@ class SelectWeaponState:
     def display(self):
         print(f'\tCurrent weapon: {self.player.weapon.name}\n')
         print('\tWeapons:\n')
+        self.player.weapon_inventory.sort()
         for i, weapon in enumerate(self.player.weapon_inventory):
             to_print = f'\t{i + 1}) {weapon.name} - Power: {weapon.power}'
             if weapon is self.player.weapon:
@@ -500,12 +500,16 @@ class BattleEndState:
             self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
 
     def display(self):
+        bonus_xp = 0
         print(f'\tYou defeated the {self.enemy.type} and received:')
         for weapon in self.enemy.weapon_inventory:
             if weapon is not None:
-                print(f'\t{weapon.name} - Power: {weapon.power}')
-                self.player.weapon_inventory.append(weapon)
-        print(f'\t{self.enemy.xp} xp')
+                if weapon not in self.player.weapon_inventory:
+                    print(f'\t{weapon.name} - Power: {weapon.power}')
+                    self.player.weapon_inventory.append(weapon)
+                else:  # convert duplicate weapons to extra xp so inventory doesn't fill up with useless items
+                    bonus_xp = weapon.power
+        print(f'\t{self.enemy.xp + bonus_xp} xp')
 
 
 class LevelUpState:

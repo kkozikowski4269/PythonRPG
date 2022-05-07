@@ -14,6 +14,17 @@ class Weapon:
     def alt_attack(self):
         return 20
 
+    def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return False
+        return self.name == other.name and self.power == other.power
+
+    def __lt__(self, other):
+        if self.name == other.name:
+            return self.power < other.power
+        return self.name < other.name
+
+
 
 class Sword(Weapon):
     def __init__(self, power):
