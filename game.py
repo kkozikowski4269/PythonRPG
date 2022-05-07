@@ -44,3 +44,8 @@ class Game:
             self.get_user_input()
             system('cls')
 
+    def reset(self):
+        self.state = EndState(self)
+        self = Game()
+        self.play()
+

@@ -103,16 +103,17 @@ class Enemy:
                 game.state = BattleState(game, self)
 
     def main_attack(self):
-        pass
+        return int(random.randrange(0, max([self.strength, self.dexterity, self.wisdom])*2))
 
     def alt_attack(self):
-        pass
+        return int(random.randrange(0, max([self.strength, self.dexterity, self.wisdom])*4))
 
     def fill_inventories(self):
         pass
 
     def attack(self):
-        return random.choices([self.main_attack(), self.alt_attack()], [75, 25], k=1)
+        damage = random.choices([self.main_attack(), self.alt_attack()], [75, 25], k=1)
+        return int(damage[0])
 
     def scale_stats(self):
         self.max_hp = self.max_hp * self.level

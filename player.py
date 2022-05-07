@@ -23,7 +23,7 @@ class Player:
         self.special_defense = 1
         self.speed = 1
         self.xp = 0
-        self.xp_to_level = 50
+        self.xp_to_level = 20
         self.level = 1
 
     def check_health(self):

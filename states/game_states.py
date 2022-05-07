@@ -320,6 +320,8 @@ class MenuState:
             self.game.state = RunningState(self.game)
         elif user_input == '6':
             self.game.state = IntroState(self.game)
+            self.game.reset()
+
 
     def display(self):
         print('\t\t(Paused)\n')
@@ -397,13 +399,16 @@ class EnemyTurnBattleState:
         self.enemy = enemy
 
     def get_user_input(self):
-        damage = self.enemy.main_attack()
-        print(f'{self.enemy.type} hits you for {damage}')
+        damage = self.enemy.attack()
+        modified_damage = int(damage * (10 / (10 + self.player.defense)))
+        print(f'{self.enemy.type} hits you for {modified_damage}')
         self.player.hp -= damage
         input()
         self.player.check_health()
         if self.player.is_alive():
             self.game.state = PlayerTurnBattleState(self.game, self.enemy)
+        else:
+            self.game.state = GameOverState(self.game)
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
@@ -561,10 +566,12 @@ class GameOverState:
         self.game = game
 
     def get_user_input(self):
-        pass
+        input('Enter to continue')
+        self.game.reset()
+        self.game.state = IntroState(self.game)
 
     def display(self):
-        print("In game over state")
+        print(util.get_image('images/menu/game_over_screen.txt'))
 
 
 """
@@ -579,10 +586,10 @@ class VictoryState:
         self.game = game
 
     def get_user_input(self):
-        pass
+        input('Enter to continue')
 
     def display(self):
-        print("In victory state")
+        print(util.get_image('images/menu/victory_screen.txt'))
 
 
 """
