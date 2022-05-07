@@ -1,6 +1,7 @@
 import json
 import os
 
+import util
 from area import Area
 from hud import HUD
 from location import Location
@@ -17,6 +18,7 @@ class Game:
         self.locations = {}
         self.save_manager = SaveManager('save_files/')
         self.volume = 1
+        self.sfx_volume = 1
         self.hud = HUD(self)
 
     def set_locations(self):
@@ -39,6 +41,7 @@ class Game:
     def play(self):
         system('cls')
         util.set_volume(self.volume)
+        util.set_sfx_volume(self.sfx_volume)
         while type(self.state) is not EndState:
             self.display()
             self.get_user_input()

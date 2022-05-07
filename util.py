@@ -4,6 +4,7 @@ import pygame.mixer
 class Music:
     current_music = None
     current_volume = 5
+    current_sfx_volume = 5
 
 
 pygame.init()
@@ -24,6 +25,15 @@ def set_volume(volume):
     else:
         Music.current_volume = volume
     pygame.mixer.music.set_volume(Music.current_volume / 10)
+
+
+def set_sfx_volume(volume):
+    if volume > 10:
+        Music.current_sfx_volume = 10
+    elif volume < 0:
+        Music.current_sfx_volume = 0
+    else:
+        Music.current_sfx_volume = volume
 
 
 def get_volume():
@@ -47,4 +57,5 @@ def stop_music():
 
 def play_sound_effect(file_name):
     effect = pygame.mixer.Sound(f'sounds/effects/{file_name}')
+    effect.set_volume(Music.current_sfx_volume / 10)
     effect.play()

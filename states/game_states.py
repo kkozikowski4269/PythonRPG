@@ -219,6 +219,25 @@ class SetVolumeState:
         print('\n\t(Enter "exit" to go back)')
 
 
+class SetSFXVolumeState:
+    def __init__(self, game):
+        self.game = game
+        self.border = '================'
+        self.previous_state = game.state
+
+    def get_user_input(self):
+        user_input = input('>>>')
+        if user_input == 'exit':
+            self.game.state = self.previous_state
+        elif re.match('[0-9]', user_input):
+            util.set_sfx_volume(int(user_input))
+            self.game.sfx_volume = int(user_input)
+
+    def display(self):
+        print(util.get_image('images/menu/settings/sfx_volume.txt').replace('-', str(util.get_volume())))
+        print('\n\t(Enter "exit" to go back)')
+
+
 """
 ========================================================================================================================
 DELETE GAME STATE
@@ -402,7 +421,7 @@ class EnemyTurnBattleState:
         damage = self.enemy.attack()
         modified_damage = int(damage * (10 / (10 + self.player.defense)))
         print(f'{self.enemy.type} hits you for {modified_damage}')
-        self.player.hp -= damage
+        self.player.hp -= modified_damage
         input()
         self.player.check_health()
         if self.player.is_alive():
@@ -476,6 +495,7 @@ class BattleEndState:
             self.game.state = LevelUpState(self.game)
         else:
             self.game.state = RunningState(self.game)
+            self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
 
     def display(self):
         print(f'\tYou defeated the {self.enemy.type} and received:')
@@ -563,6 +583,8 @@ GAME OVER STATE (GAME END - PLAYER LOSES)
 
 class GameOverState:
     def __init__(self, game):
+        util.play_sound_effect('gameover_sfx.wav')
+        util.play_music('gameover_song.wav')
         self.game = game
 
     def get_user_input(self):

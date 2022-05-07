@@ -158,6 +158,6 @@ class Rogue(Player):
         self.strength = 3
         self.wisdom = 3
         self.dexterity = 10
-        self.defense = 3
+        self.defense = 2
         self.special_defense = 2
-        self.speed = 5
+        self.speed = 7

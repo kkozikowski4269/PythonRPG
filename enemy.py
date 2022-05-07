@@ -2,7 +2,7 @@ import random
 
 from states.enemy_states import EnemyUnspawnedState
 from states.game_states import BattleState
-from weapon import Sword, Staff
+from weapon import Sword, Staff, Hammer, Dagger
 
 
 class Enemy:
@@ -138,7 +138,7 @@ class Skeleton(Enemy):
         self.weapon_inventory = []
 
     def fill_inventories(self):
-        self.weapon_drops = [None, Sword(1), Sword(2), Sword(3), Staff(1)]
+        self.weapon_drops = [None, Sword(1), Sword(2), Sword(4), Dagger(3)]
         self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 10, 2, 13], k=1)
 
 
@@ -155,6 +155,10 @@ class Spider(Enemy):
         self.xp = 5*level
         self.speed = 7
 
+    def fill_inventories(self):
+        self.weapon_drops = [None, Dagger(1), Sword(2)]
+        self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 25], k=1)
+
 
 class Rat(Enemy):
     def __init__(self, level):
@@ -168,6 +172,10 @@ class Rat(Enemy):
         self.special_defense = 2
         self.xp = 5*level
         self.speed = 5
+
+    def fill_inventories(self):
+        self.weapon_drops = [None, Sword(1), Dagger(2), Hammer(3),]
+        self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 15, 10], k=1)
 
 
 class Minotaur(Enemy):
@@ -183,6 +191,10 @@ class Minotaur(Enemy):
         self.speed = 5
         self.xp = 11*level
 
+    def fill_inventories(self):
+        self.weapon_drops = [None, Hammer(4), Hammer(6)]
+        self.weapon_inventory = random.choices(self.weapon_drops, [50, 35, 15], k=1)
+
 
 class Knight(Enemy):
     def __init__(self, level):
@@ -196,6 +208,10 @@ class Knight(Enemy):
         self.special_defense = 4
         self.speed = 7
         self.xp = 11*level
+
+    def fill_inventories(self):
+        self.weapon_drops = [None, Sword(4), Sword(5), Sword(7), Dagger(6)]
+        self.weapon_inventory = random.choices(self.weapon_drops, [30, 25, 15, 10, 20], k=1)
 
 
 class Gargoyle(Enemy):
@@ -211,6 +227,10 @@ class Gargoyle(Enemy):
         self.speed = 3
         self.xp = 15*level
 
+    def fill_inventories(self):
+        self.weapon_drops = [None, Hammer(random.randint(5, 8)), Sword(random.randint(5, 8)), Dagger(random.randint(5, 8))]
+        self.weapon_inventory = random.choices(self.weapon_drops, [52, 16, 16, 16], k=1)
+
 
 class Demon(Enemy):
     def __init__(self, level):
@@ -224,6 +244,10 @@ class Demon(Enemy):
         self.special_defense = 7
         self.speed = 6
         self.xp = 15*level
+
+    def fill_inventories(self):
+        self.weapon_drops = [Sword(random.randint(1, 11)), Hammer(random.randint(1, 11)), Dagger(random.randint(1, 11))]
+        self.weapon_inventory = random.choices(self.weapon_drops, [33, 33, 33], k=1)
 
 
 class Dragon(Enemy):

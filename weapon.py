@@ -49,10 +49,10 @@ class Dagger(Weapon):
         self.primary_type = 'dexterity'
 
     def main_attack(self):
-        return 10
+        return random.choices([1, 2], [75, 25], k=1)[0]
 
     def alt_attack(self):
-        return 20
+        return random.choices([0, 1, 2, 3, 4, 5], [20, 20, 20, 15, 15, 10], k=1)[0]
 
 
 class Staff(Weapon):
