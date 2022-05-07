@@ -22,6 +22,9 @@ class Player:
         self.defense = 1
         self.special_defense = 1
         self.speed = 1
+        self.xp = 0
+        self.xp_to_level = 50
+        self.level = 1
 
     def check_health(self):
         self.state.check_health()
@@ -97,6 +100,15 @@ class Player:
                 damage += self.get_stat(self.weapon.primary_type)
 
         return damage
+
+    def check_level_up(self, xp):
+        self.xp += xp
+        if self.xp >= self.xp_to_level:
+            self.level += 1
+            self.xp = self.xp % self.xp_to_level
+            self.xp_to_level = int(self.xp_to_level + (self.xp_to_level*0.2))
+            return True
+        return False
 
 
 class Knight(Player):

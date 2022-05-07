@@ -81,10 +81,12 @@ class NewGameState:
                 self.game.player.current_area.enter(self.game.player, self.game.player.x, self.game.player.y)
                 file_name = f'{self.game.save_file_name}.bin'
                 self.game.save_manager.save_game(self.game, file_name)
-                self.loading_bar(0.35, 'Creating character...')
-                util.get_image(f'images/player/{player_type.type.lower()}.txt')
+                # self.loading_bar(0.35, 'Creating character...')
+                print(util.get_image(f'images/player/{player_type.type.lower()}.txt'))
+                print(f'Welcome {self.game.player.name}!')
                 input('Press enter to continue...')
                 self.game.state = RunningState(self.game)
+                self.game.hud.update_map()
 
     def display(self):
         if self.game.save_file_name is None:
@@ -283,7 +285,6 @@ class RunningState:
             pass
 
     def display(self):
-        self.game.hud.update_map()
         self.game.hud.print_map()
         self.player.current_area.print_area()
 
@@ -406,12 +407,12 @@ class EnemyTurnBattleState:
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
-        print(f'Strength: {self.enemy.strength}')
-        print(f'Wisdom: {self.enemy.wisdom}')
-        print(f'Dexterity: {self.enemy.dexterity}')
-        print(f'Defense: {self.enemy.defense}')
-        print(f'S Defense: {self.enemy.special_defense}')
-        print(f'Speed: {self.enemy.speed}')
+        # print(f'Strength: {self.enemy.strength}')
+        # print(f'Wisdom: {self.enemy.wisdom}')
+        # print(f'Dexterity: {self.enemy.dexterity}')
+        # print(f'Defense: {self.enemy.defense}')
+        # print(f'S Defense: {self.enemy.special_defense}')
+        # print(f'Speed: {self.enemy.speed}')
         print(self.enemy.image)
         print(f'{self.player.name} HP: {self.player.hp}')
 
@@ -435,7 +436,7 @@ class PlayerTurnBattleState:
         elif choice == '3':
             self.game.state = BattleMenuState(self.game)
             return
-        modified_damage = int(damage*(10/(10+self.enemy.defense)))
+        modified_damage = int(damage * (10 / (10 + self.enemy.defense)))
         print(f'You hit the {self.enemy.type} for {modified_damage}')
         self.enemy.hp -= modified_damage
         input()
@@ -447,12 +448,12 @@ class PlayerTurnBattleState:
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
-        print(f'Strength: {self.enemy.strength}')
-        print(f'Wisdom: {self.enemy.wisdom}')
-        print(f'Dexterity: {self.enemy.dexterity}')
-        print(f'Defense: {self.enemy.defense}')
-        print(f'S Defense: {self.enemy.special_defense}')
-        print(f'Speed: {self.enemy.speed}')
+        # print(f'Strength: {self.enemy.strength}')
+        # print(f'Wisdom: {self.enemy.wisdom}')
+        # print(f'Dexterity: {self.enemy.dexterity}')
+        # print(f'Defense: {self.enemy.defense}')
+        # print(f'S Defense: {self.enemy.special_defense}')
+        # print(f'Speed: {self.enemy.speed}')
         print(self.enemy.image)
         print(f'{self.player.name} HP: {self.player.hp}')
         print(f'1) Main attack\n2) Alt Attack\n3) Menu')
@@ -466,8 +467,10 @@ class BattleEndState:
 
     def get_user_input(self):
         input('\t(Enter to continue)')
-        self.game.state = RunningState(self.game)
-        self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
+        if self.player.check_level_up(self.enemy.xp):
+            self.game.state = LevelUpState(self.game)
+        else:
+            self.game.state = RunningState(self.game)
 
     def display(self):
         print(f'\tYou defeated the {self.enemy.type} and received:')
@@ -475,6 +478,50 @@ class BattleEndState:
             if weapon is not None:
                 print(f'\t{weapon.name} - Power: {weapon.power}')
                 self.player.weapon_inventory.append(weapon)
+        print(f'\t{self.enemy.xp} xp')
+
+
+class LevelUpState:
+    def __init__(self, game):
+        self.game = game
+        self.player = self.game.player
+        self.attribute_points = 3
+        util.play_music('level_up_song.wav')
+
+    def get_user_input(self):
+        print('What would you like to level up?')
+        choice = input('>>>')
+        if choice == '1':
+            self.player.max_hp += 20
+        elif choice == '2':
+            self.player.strength += 1
+        elif choice == '3':
+            self.player.wisdom += 1
+        elif choice == '4':
+            self.player.dexterity += 1
+        elif choice == '5':
+            self.player.defense += 1
+        elif choice == '6':
+            self.player.special_defense += 1
+        elif choice == '7':
+            self.player.speed += 1
+        else:
+            return
+
+        self.attribute_points -= 1
+        if self.attribute_points <= 0:
+            self.game.state = RunningState(self.game)
+
+    def display(self):
+        print('Level Up!')
+        print(f'You have {self.attribute_points} left')
+        print(f'1) Max HP: {self.player.max_hp}')
+        print(f'2) Strength: {self.player.strength}')
+        print(f'3) Wisdom: {self.player.wisdom}')
+        print(f'4) Dexterity: {self.player.dexterity}')
+        print(f'5) Defense: {self.player.defense}')
+        print(f'6) S Defense: {self.player.special_defense}')
+        print(f'7) Speed: {self.player.speed}\n')
 
 
 """

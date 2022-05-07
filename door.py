@@ -49,3 +49,5 @@ class Door:
         if player.is_colliding(self):
             self.use_door(player)
             game.hud.area = player.current_area
+            game.hud.update_map()
+            player.current_area.visited = True

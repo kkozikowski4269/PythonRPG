@@ -28,6 +28,8 @@ class HUD:
                 print(f'  Weapon: {self.game.player.weapon.name} ({self.game.player.weapon.power})'.ljust(24) + '|')
             elif i == 3:
                 print(f'  HP: {self.game.player.hp}/{self.game.player.max_hp}'.ljust(24) + '|')
+            elif i == 4:
+                print(f'  Level: {self.game.player.level} xp: {self.game.player.xp}/{self.game.player.xp_to_level}'.ljust(24) + '|')
             else:
                 print(''.ljust(24) + '|')
         print('=========================================\n'
@@ -36,6 +38,7 @@ class HUD:
               '=========================================')
 
     def update_map(self):
-        x = self.area.x
-        y = self.area.y
-        self.minimap[y][x] = self.area.symbol
+        if not self.area.visited:
+            x = self.area.x
+            y = self.area.y
+            self.minimap[y][x] = self.area.symbol

@@ -10,6 +10,7 @@ class Enemy:
         self.type = self.__class__.__name__
         self.state = EnemyUnspawnedState(self)
         self.level = level
+        self.xp = 0
         self.x = 0
         self.y = 0
         self.x_spawn = 0
@@ -93,26 +94,25 @@ class Enemy:
     def is_alive(self):
         return self.state.is_alive()
 
-    def attack(self):
-        pass
-
     def observe_player(self, player, game):
-        if self.state.is_alive():
+        if self.is_colliding(player):
+            game.state = BattleState(game, self)
+        else:
+            self.move()
             if self.is_colliding(player):
                 game.state = BattleState(game, self)
-            else:
-                self.move()
-                if self.is_colliding(player):
-                    game.state = BattleState(game, self)
 
     def main_attack(self):
-        return 1
+        pass
 
     def alt_attack(self):
-        return 2
+        pass
 
     def fill_inventories(self):
         pass
+
+    def attack(self):
+        return random.choices([self.main_attack(), self.alt_attack()], [75, 25], k=1)
 
     def scale_stats(self):
         self.max_hp = self.max_hp * self.level
@@ -133,6 +133,7 @@ class Skeleton(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 1
+        self.xp = 5*level
         self.weapon_inventory = []
 
     def fill_inventories(self):
@@ -150,6 +151,7 @@ class Spider(Enemy):
         self.wisdom = 1
         self.defense = 1
         self.special_defense = 1
+        self.xp = 5*level
         self.speed = 7
 
 
@@ -163,6 +165,7 @@ class Rat(Enemy):
         self.wisdom = 1
         self.defense = 2
         self.special_defense = 2
+        self.xp = 5*level
         self.speed = 5
 
 
@@ -177,6 +180,7 @@ class Minotaur(Enemy):
         self.defense = 7
         self.special_defense = 3
         self.speed = 5
+        self.xp = 11*level
 
 
 class Knight(Enemy):
@@ -190,6 +194,7 @@ class Knight(Enemy):
         self.defense = 5
         self.special_defense = 4
         self.speed = 7
+        self.xp = 11*level
 
 
 class Gargoyle(Enemy):
@@ -203,6 +208,7 @@ class Gargoyle(Enemy):
         self.defense = 10
         self.special_defense = 4
         self.speed = 3
+        self.xp = 15*level
 
 
 class Demon(Enemy):
@@ -216,6 +222,7 @@ class Demon(Enemy):
         self.defense = 2
         self.special_defense = 7
         self.speed = 6
+        self.xp = 15*level
 
 
 class Dragon(Enemy):
@@ -229,3 +236,4 @@ class Dragon(Enemy):
         self.defense = 10
         self.special_defense = 10
         self.speed = 9
+        self.xp = 30*level

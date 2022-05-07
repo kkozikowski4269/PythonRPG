@@ -12,6 +12,7 @@ class Area:
     DOOR_SYMBOLS = ('u', 'r', 'd', 'l')
 
     def __init__(self, area_json):
+        self.visited = False
         self.x = area_json['x']
         self.y = area_json['y']
         self.name = area_json['name']
