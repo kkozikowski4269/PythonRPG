@@ -187,6 +187,8 @@ class SettingsState:
             self.game.state = self.previous_state
         elif user_input == '1':
             self.game.state = SetVolumeState(self.game)
+        elif user_input == '2':
+            self.game.state = SetSFXVolumeState(self.game)
 
     def display(self):
         print(util.get_image('images/menu/settings/settings.txt'))
@@ -234,7 +236,7 @@ class SetSFXVolumeState:
             self.game.sfx_volume = int(user_input)
 
     def display(self):
-        print(util.get_image('images/menu/settings/sfx_volume.txt').replace('-', str(util.get_volume())))
+        print(util.get_image('images/menu/settings/sfx_volume.txt').replace('-', str(util.get_sfx_volume())))
         print('\n\t(Enter "exit" to go back)')
 
 

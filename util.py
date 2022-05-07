@@ -39,6 +39,9 @@ def set_sfx_volume(volume):
 def get_volume():
     return Music.current_volume
 
+def get_sfx_volume():
+    return Music.current_sfx_volume
+
 
 def play_music(file_name):
     if current_music() != file_name:
