@@ -1,8 +1,10 @@
 import random
 
+import factories.potion_factory
 from states.enemy_states import EnemyUnspawnedState
 from states.game_states import BattleState
 from weapon import Sword, Staff, Hammer, Dagger
+from factories import potion_factory
 
 
 class Enemy:
@@ -140,6 +142,10 @@ class Skeleton(Enemy):
     def fill_inventories(self):
         self.weapon_drops = [None, Sword(1), Sword(2), Sword(4), Dagger(3)]
         self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 10, 2, 13], k=1)
+        self.inventory = random.choices([None, potion_factory.get('health', 'small'),
+                                         potion_factory.get_random('small'),
+                                         potion_factory.get_random('medium')],
+                                        [40, 30, 20, 10], k=1)
 
 
 class Spider(Enemy):
@@ -158,6 +164,9 @@ class Spider(Enemy):
     def fill_inventories(self):
         self.weapon_drops = [None, Dagger(1), Sword(2)]
         self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 25], k=1)
+        self.inventory = random.choices(
+            [None, potion_factory.get('health', 'small'), potion_factory.get_random('small')],
+            [40, 35, 25], k=1)
 
 
 class Rat(Enemy):
@@ -176,6 +185,9 @@ class Rat(Enemy):
     def fill_inventories(self):
         self.weapon_drops = [None, Sword(1), Dagger(2), Hammer(3),]
         self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 15, 10], k=1)
+        self.inventory = random.choices(
+            [None, potion_factory.get('health', 'small'), potion_factory.get_random('small')],
+            [40, 35, 25], k=1)
 
 
 class Minotaur(Enemy):
@@ -194,6 +206,9 @@ class Minotaur(Enemy):
     def fill_inventories(self):
         self.weapon_drops = [None, Hammer(4), Hammer(6)]
         self.weapon_inventory = random.choices(self.weapon_drops, [50, 35, 15], k=1)
+        self.inventory = random.choices(
+            [None, potion_factory.get('health', random.choice(['medium', 'large'])), potion_factory.get_random('large')],
+            [30, 55, 15], k=2)
 
 
 class Knight(Enemy):
@@ -212,6 +227,10 @@ class Knight(Enemy):
     def fill_inventories(self):
         self.weapon_drops = [None, Sword(4), Sword(5), Sword(7), Dagger(6)]
         self.weapon_inventory = random.choices(self.weapon_drops, [30, 25, 15, 10, 20], k=1)
+        self.inventory = random.choices(
+            [None, potion_factory.get('health', random.choice(['medium', 'large'])),
+             potion_factory.get_random('medium')],
+            [30, 55, 15], k=2)
 
 
 class Gargoyle(Enemy):
@@ -230,6 +249,10 @@ class Gargoyle(Enemy):
     def fill_inventories(self):
         self.weapon_drops = [None, Hammer(random.randint(5, 8)), Sword(random.randint(5, 8)), Dagger(random.randint(5, 8))]
         self.weapon_inventory = random.choices(self.weapon_drops, [52, 16, 16, 16], k=1)
+        self.inventory = random.choices(
+            [None, potion_factory.get('health', random.choice(['medium', 'large'])),
+             potion_factory.get_random(random.choice(['medium', 'large']))],
+            [30, 55, 15], k=2)
 
 
 class Demon(Enemy):
@@ -248,6 +271,10 @@ class Demon(Enemy):
     def fill_inventories(self):
         self.weapon_drops = [Sword(random.randint(1, 11)), Hammer(random.randint(1, 11)), Dagger(random.randint(1, 11))]
         self.weapon_inventory = random.choices(self.weapon_drops, [33, 33, 33], k=1)
+        self.inventory = random.choices(
+            [None, potion_factory.get('health', random.choice(['medium', 'large'])),
+             potion_factory.get_random(random.choice(['medium', 'large']))],
+            [30, 55, 15], k=2)
 
 
 class Dragon(Enemy):

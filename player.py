@@ -25,6 +25,7 @@ class Player:
         self.xp = 0
         self.xp_to_level = 20
         self.level = 1
+        self.stat_mods = {'strength': 0, 'wisdom': 0, 'dexterity': 0, 'defense': 0, 'special_defense': 0, 'speed': 0}
 
     def check_health(self):
         self.state.check_health()
@@ -67,11 +68,21 @@ class Player:
 
     def get_stat(self, stat):
         if stat == 'strength':
-            return self.strength
+            return self.strength + self.stat_mods['strength']
         elif stat == 'dexterity':
-            return self.dexterity
+            return self.dexterity + self.stat_mods['dexterity']
         elif stat == 'wisdom':
-            return self.wisdom
+            return self.wisdom + self.stat_mods['wisdom']
+        elif stat == 'defense':
+            return self.wisdom + self.stat_mods['defense']
+        elif stat == 'special_defense':
+            return self.wisdom + self.stat_mods['special_defense']
+        elif stat == 'speed':
+            return self.wisdom + self.stat_mods['speed']
+
+    def reset_stat_mods(self):
+        for stat in self.stat_mods.keys():
+            self.stat_mods[stat] = 0
 
     def notify_observers(self, game):
         for observer in self.observers:

@@ -5,8 +5,11 @@ from enum import Enum
 from os import system
 from time import sleep
 
+from typing import List
+
 import util
 from factories.player_factory import PlayerFactory
+from item import HealthPotion
 from states.enemy_states import EnemyUnspawnedState
 from util import get_image
 
@@ -329,7 +332,9 @@ class MenuState:
 
     def get_user_input(self):
         user_input = input('>>>')
-        if user_input == '2':
+        if user_input == '1':
+            self.game.state = UseItemState(self.game)
+        elif user_input == '2':
             self.game.state = SelectWeaponState(self.game)
         elif user_input == '3':
             file_name = f'{self.game.save_file_name}.bin'
@@ -348,6 +353,13 @@ class MenuState:
         print(f'\tName: {self.player.name}')
         print(f'\tClass: {self.player.type}')
         print(f'\tWeapon: {self.player.weapon.name}')
+        print(f'\n\tHp: {self.player.hp}/{self.player.max_hp}')
+        print(f'\tStrength: {self.player.get_stat("strength")}')
+        print(f'\tDexterity: {self.player.get_stat("dexterity")}')
+        print(f'\tWisdom: {self.player.get_stat("wisdom")}')
+        print(f'\tDefense: {self.player.get_stat("defense")}')
+        print(f'\tS Defense: {self.player.get_stat("special_defense")}')
+        print(f'\tSpeed: {self.player.get_stat("speed")}\n')
         print(util.get_image('images/menu/pause_menu.txt'))
 
 
@@ -378,6 +390,35 @@ class SelectWeaponState:
             if weapon is self.player.weapon:
                 to_print += ' (Equipped)'
             print(to_print)
+        print('\n\t(Enter "exit" to go back)')
+
+
+class UseItemState:
+    def __init__(self, game):
+        self.game = game
+        self.player = self.game.player
+        self.previous_state = game.state
+        self.item_types = list(set(self.player.item_inventory))
+
+    def get_user_input(self):
+        user_input = input('>>>')
+        if user_input.lower() == 'exit':
+            self.game.state = self.previous_state
+        elif re.match('[1-9]+', user_input):
+            if int(user_input) - 1 < len(self.item_types):
+                item_index = self.player.item_inventory.index(self.item_types[int(user_input) - 1])
+                if self.player.item_inventory[item_index].__class__ == HealthPotion:
+                    self.player.item_inventory[item_index].use(self.player)
+                    input(f'You use the {self.player.item_inventory[item_index]}')
+                    del self.player.item_inventory[item_index]
+                    self.game.state = self.previous_state
+                else:
+                    input(f'This item can only be used in battle')
+
+    def display(self):
+        print('\tInventory:\n')
+        for i, item in enumerate(self.item_types):
+            print(f'\t{i + 1}) (x{self.player.item_inventory.count(item)}) {item.name} - {item.description}')
         print('\n\t(Enter "exit" to go back)')
 
 
@@ -433,12 +474,6 @@ class EnemyTurnBattleState:
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
-        # print(f'Strength: {self.enemy.strength}')
-        # print(f'Wisdom: {self.enemy.wisdom}')
-        # print(f'Dexterity: {self.enemy.dexterity}')
-        # print(f'Defense: {self.enemy.defense}')
-        # print(f'S Defense: {self.enemy.special_defense}')
-        # print(f'Speed: {self.enemy.speed}')
         print(self.enemy.image)
         print(f'{self.player.name} HP: {self.player.hp}')
 
@@ -493,6 +528,7 @@ class BattleEndState:
 
     def get_user_input(self):
         input('\t(Enter to continue)')
+        self.player.reset_stat_mods()
         if self.player.check_level_up(self.enemy.xp):
             self.game.state = LevelUpState(self.game)
         else:
@@ -509,6 +545,10 @@ class BattleEndState:
                     self.player.weapon_inventory.append(weapon)
                 else:  # convert duplicate weapons to extra xp so inventory doesn't fill up with useless items
                     bonus_xp = weapon.power
+        for item in self.enemy.inventory:
+            if item is not None:
+                self.player.item_inventory.append(item)
+                print(f'\t{item.name} - {item.description}')
         print(f'\t{self.enemy.xp + bonus_xp} xp')
 
 
@@ -565,11 +605,14 @@ BATTLE MENU STATE (MENU WHILE IN BATTLE)
 class BattleMenuState:
     def __init__(self, game):
         self.game = game
+        self.player = self.game.player
         self.previous_state = game.state
 
     def get_user_input(self):
         user_input = input('>>>')
-        if user_input == '2':
+        if user_input == '1':
+            self.game.state = UseItemBattleState(self.game)
+        elif user_input == '2':
             self.game.state = SelectWeaponState(self.game)
         elif user_input == '3':
             self.game.state = SettingsState(self.game)
@@ -577,8 +620,41 @@ class BattleMenuState:
             self.game.state = self.previous_state
 
     def display(self):
+        print(f'\t\tStats:')
+        print(f'\tHp: {self.player.hp}/{self.player.max_hp}')
+        print(f'\tStrength: {self.player.get_stat("strength")}')
+        print(f'\tDexterity: {self.player.get_stat("dexterity")}')
+        print(f'\tWisdom: {self.player.get_stat("wisdom")}')
+        print(f'\tDefense: {self.player.get_stat("defense")}')
+        print(f'\tS Defense: {self.player.get_stat("special_defense")}')
+        print(f'\tSpeed: {self.player.get_stat("speed")}\n')
         print(util.get_image('images/menu/battle/battle_menu.txt'))
 
+
+class UseItemBattleState:
+    def __init__(self, game):
+        self.game = game
+        self.player = self.game.player
+        self.previous_state = game.state
+        self.item_types = list(set(self.player.item_inventory))
+
+    def get_user_input(self):
+        user_input = input('>>>')
+        if user_input.lower() == 'exit':
+            self.game.state = self.previous_state
+        elif re.match('[1-9]+', user_input):
+            if int(user_input) - 1 < len(self.item_types):
+                item_index = self.player.item_inventory.index(self.item_types[int(user_input) - 1])
+                self.player.item_inventory[item_index].use(self.player)
+                input(f'You use the {self.player.item_inventory[item_index]}')
+                del self.player.item_inventory[item_index]
+                self.game.state = self.previous_state
+
+    def display(self):
+        print('\tInventory:\n')
+        for i, item in enumerate(self.item_types):
+            print(f'\t{i + 1}) (x{self.player.item_inventory.count(item)}) {item.name} - {item.description}')
+        print('\n\t(Enter "exit" to go back)')
 
 """
 ========================================================================================================================
