@@ -505,7 +505,7 @@ class PlayerTurnBattleState:
         if self.enemy.is_alive():
             self.game.state = EnemyTurnBattleState(self.game, self.enemy)
         else:
-            self.game.state = BattleEndState(self.game, self.enemy)
+            self.enemy.on_defeat(self.game)
 
     def display(self):
         print(f'{self.enemy.type} HP: {self.enemy.hp}')
@@ -688,9 +688,11 @@ VICTORY STATE (GAME END - PLAYER WINS)
 class VictoryState:
     def __init__(self, game):
         self.game = game
+        util.play_music('win_song.wav')
 
     def get_user_input(self):
         input('Enter to continue')
+        self.game.reset()
 
     def display(self):
         print(util.get_image('images/menu/victory_screen.txt'))

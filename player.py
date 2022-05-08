@@ -134,6 +134,19 @@ class Knight(Player):
         self.special_defense = 4
         self.speed = 5
 
+# For testing
+# class Knight(Player):
+#     def __init__(self):
+#         super().__init__()
+#         self.max_hp = 2000
+#         self.hp = self.max_hp
+#         self.strength = 500
+#         self.wisdom = 500
+#         self.dexterity = 500
+#         self.defense = 500
+#         self.special_defense = 400
+#         self.speed = 500
+
 
 class Warrior(Player):
     def __init__(self):

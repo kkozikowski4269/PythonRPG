@@ -2,7 +2,7 @@ import random
 
 import factories.potion_factory
 from states.enemy_states import EnemyUnspawnedState
-from states.game_states import BattleState
+from states.game_states import BattleState, VictoryState, BattleEndState
 from weapon import Sword, Staff, Hammer, Dagger
 from factories import potion_factory
 
@@ -124,6 +124,9 @@ class Enemy:
         self.wisdom = self.wisdom * self.level
         self.defense = self.defense * self.level
         self.special_defense = self.special_defense * self.level
+
+    def on_defeat(self, game):
+        game.state = BattleEndState(game, self)
 
 
 class Skeleton(Enemy):
@@ -280,7 +283,7 @@ class Demon(Enemy):
 class Dragon(Enemy):
     def __init__(self, level):
         super().__init__(level)
-        self.max_hp = 80
+        self.max_hp = 150
         self.hp = self.max_hp
         self.strength = 11
         self.dexterity = 8
@@ -288,4 +291,7 @@ class Dragon(Enemy):
         self.defense = 10
         self.special_defense = 10
         self.speed = 9
-        self.xp = 30*level
+        # self.xp = 30*level
+
+    def on_defeat(self, game):
+        game.state = VictoryState(game)
