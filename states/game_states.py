@@ -296,8 +296,8 @@ class RunningState:
         user_input = msvcrt.getch().decode()
         # ----------------------------------------
         # temporary quit key
-        if user_input == 'p':
-            self.game.state = EndState(self.game)
+        # if user_input == 'p':
+        #     self.game.state = EndState(self.game)
         # ----------------------------------------
         if user_input == 'm':
             self.game.state = MenuState(self.game)

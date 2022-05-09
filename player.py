@@ -113,7 +113,8 @@ class Player:
                             self.get_stat(self.weapon.primary_type) * 0.75)
             else:
                 damage += self.get_stat(self.weapon.primary_type)
-        return damage
+        # return damage
+        return 600
 
     def check_level_up(self, xp):
         self.xp += xp

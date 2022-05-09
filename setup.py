@@ -2,12 +2,12 @@ from setuptools import setup
 
 setup(
     name='SeniorProject',
-    version='',
+    version='1.0',
     packages=['states', 'factories'],
-    url='',
+    url='https://github.com/kkozikowski4269/PythonRPG',
     license='',
-    author='kfkoz',
+    author='Kevin Kozikowski',
     author_email='',
     description='',
-    install_requires=["pygame"]
+    install_requires=['pygame']
 )

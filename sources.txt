@@ -1,1 +1,18 @@
 hit_sound.mp3 - https://freesound.org/people/Jofae/sounds/361636/
+enemy_hit_sound.wav - https://freesound.org/people/Soundholder/sounds/425347/
+
+Enemies:
+Skeleton enemy - https://www.asciiart.eu/mythology/skeletons by nabis
+Spider enemy - https://www.asciiart.eu/animals/spiders by Shanaka Dias
+Rat enemy - https://www.asciiart.eu/animals/rodents/mice by Joan G. Stark (jgs)
+Minotaur enemy - https://ascii.co.uk/art/minotaurus by [unknown artist]
+Knight enemy - https://www.asciiart.eu/people/occupations/knights by [unknown artist]
+Gargoyle enemy - https://ascii.co.uk/art/gargoyle by Joan G. Stark (jgs)
+Dragon enemy - https://www.asciiart.eu/mythology/dragons by Alex Wargacki
+Demon enemy - https://asciiart.website/index.php?art=creatures/devils by Alex Pelton
+
+Players:
+Knight player - https://www.asciiart.eu/people/occupations/knights by Joan G. Stark (jgs)
+Rogue player - https://asciiart.website/index.php?art=people/occupations/knights by b'ger
+Warrior player - https://ascii.co.uk/art/warrior by Ojo 98
+Wizard player - https://www.asciiart.eu/people/occupations/wizards by Morfina (mrf)
