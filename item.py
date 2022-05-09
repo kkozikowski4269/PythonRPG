@@ -36,9 +36,10 @@ class HealthPotion(Item):
 class Elixir(Item):
     def __init__(self):
         super().__init__()
+        self.heal_percentage = 0.5
 
     def __hash__(self):
-        return hash(self)
+        return hash(self.name) + hash(self.heal_percentage)
 
     def use(self, target):
         target.hp += int((target.max_hp - target.hp) * 0.5)

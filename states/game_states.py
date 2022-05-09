@@ -5,12 +5,10 @@ from enum import Enum
 from os import system
 from time import sleep
 
-from typing import List
 
 import util
 from factories.player_factory import PlayerFactory
 from item import HealthPotion
-from states.enemy_states import EnemyUnspawnedState
 from util import get_image
 
 
@@ -84,7 +82,7 @@ class NewGameState:
                 self.game.player.current_area.enter(self.game.player, self.game.player.x, self.game.player.y)
                 file_name = f'{self.game.save_file_name}.bin'
                 self.game.save_manager.save_game(self.game, file_name)
-                # self.loading_bar(0.35, 'Creating character...')
+                self.loading_bar(0.35, 'Creating character...')
                 print(util.get_image(f'images/player/{player_type.type.lower()}.txt'))
                 print(f'Welcome {self.game.player.name}!')
                 input('Press enter to continue...')
@@ -354,12 +352,12 @@ class MenuState:
         print(f'\tClass: {self.player.type}')
         print(f'\tWeapon: {self.player.weapon.name}')
         print(f'\n\tHp: {self.player.hp}/{self.player.max_hp}')
-        print(f'\tStrength: {self.player.get_stat("strength")}')
-        print(f'\tDexterity: {self.player.get_stat("dexterity")}')
-        print(f'\tWisdom: {self.player.get_stat("wisdom")}')
-        print(f'\tDefense: {self.player.get_stat("defense")}')
-        print(f'\tS Defense: {self.player.get_stat("special_defense")}')
-        print(f'\tSpeed: {self.player.get_stat("speed")}\n')
+        print(f'\tStrength: {self.player.strength}')
+        print(f'\tDexterity: {self.player.dexterity}')
+        print(f'\tWisdom: {self.player.wisdom}')
+        print(f'\tDefense: {self.player.defense}')
+        print(f'\tS Defense: {self.player.special_defense}')
+        print(f'\tSpeed: {self.player.speed}\n')
         print(util.get_image('images/menu/pause_menu.txt'))
 
 
@@ -525,11 +523,12 @@ class BattleEndState:
         self.game = game
         self.player = self.game.player
         self.enemy = enemy
+        self.total_xp = 0
 
     def get_user_input(self):
         input('\t(Enter to continue)')
         self.player.reset_stat_mods()
-        if self.player.check_level_up(self.enemy.xp):
+        if self.player.check_level_up(self.total_xp):
             self.game.state = LevelUpState(self.game)
         else:
             self.game.state = RunningState(self.game)
@@ -550,6 +549,7 @@ class BattleEndState:
                 self.player.item_inventory.append(item)
                 print(f'\t{item.name} - {item.description}')
         print(f'\t{self.enemy.xp + bonus_xp} xp')
+        self.total_xp = self.enemy.xp + bonus_xp
 
 
 class LevelUpState:
@@ -582,6 +582,7 @@ class LevelUpState:
         self.attribute_points -= 1
         if self.attribute_points <= 0:
             self.game.state = RunningState(self.game)
+            self.player.current_area.layout[self.player.y][self.player.x] = str(self.player)
 
     def display(self):
         print('Level Up!')
