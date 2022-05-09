@@ -25,7 +25,6 @@ class Weapon:
         return self.name < other.name
 
 
-
 class Sword(Weapon):
     def __init__(self, power):
         super().__init__(power)

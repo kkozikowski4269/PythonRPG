@@ -41,6 +41,7 @@ class Area:
         with open(self.image_path, "r", encoding='utf-8') as file:
             for y, line in enumerate(file.readlines()):
                 row = []
+                #  check for special characters in the text file representation of the area
                 for x, c in enumerate(line):
                     if c in Area.DOOR_SYMBOLS:
                         self.doors[c].set_position(x, y)
@@ -64,8 +65,8 @@ class Area:
 
     def set_doors(self):
         for door in self.area_json['doors']:
-            symbol = next(iter(door))
-            destination = door[symbol]
+            symbol = next(iter(door))  # ie. 'r', 'l', 'u', or 'd'
+            destination = door[symbol]  # area that the door connects to
             new_door = Door(symbol, destination)
             self.doors[symbol] = new_door
 

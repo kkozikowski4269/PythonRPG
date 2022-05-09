@@ -1,3 +1,4 @@
+import util
 from states.player_states import PlayerAliveState, PlayerDeadState
 
 
@@ -92,24 +93,26 @@ class Player:
         return 'P'
 
     def main_attack(self):
+        util.play_sound_effect('hit_sound.mp3')
         damage = self.weapon.main_attack()
+        # modify weapon's damage based on player's stats
         if damage > 0:
             if self.weapon.secondary_type is not None:
                 damage += (self.get_stat(self.weapon.secondary_type)*0.5) + (self.get_stat(self.weapon.primary_type)*0.75)
             else:
                 damage += self.get_stat(self.weapon.primary_type)
-
         return int(damage)
 
     def alt_attack(self):
+        util.play_sound_effect('hit_sound.mp3')
         damage = self.weapon.alt_attack()
+        # modify weapon's damage based on player's stats
         if damage > 0:
             if self.weapon.secondary_type is not None:
                 damage += (self.get_stat(self.weapon.secondary_type) * 0.5) + (
                             self.get_stat(self.weapon.primary_type) * 0.75)
             else:
                 damage += self.get_stat(self.weapon.primary_type)
-
         return damage
 
     def check_level_up(self, xp):

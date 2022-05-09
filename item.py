@@ -27,6 +27,7 @@ class HealthPotion(Item):
         return hash(self.name) + hash(self.heal_amount)
 
     def use(self, target):
+        # heal target, but not over their max health
         if (target.hp + self.heal_amount) >= target.max_hp:
             target.hp = target.max_hp
         else:
@@ -43,8 +44,6 @@ class Elixir(Item):
 
     def use(self, target):
         target.hp += int((target.max_hp - target.hp) * 0.5)
-
-
 
 
 class StatPotion(Item):
@@ -65,6 +64,7 @@ class StatPotion(Item):
         return hash(self.name) + hash(self.boost_amount) + hash(self.stat_type)
 
     def use(self, target):
+        # prevent player from boosting stat multiple times with the same strength or weaker type potion
         if target.stat_mods[self.stat_type] < self.boost_amount:
             target.stat_mods[self.stat_type] = self.boost_amount
 

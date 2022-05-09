@@ -25,7 +25,7 @@ class Game:
         for file in os.listdir('locations'):
             with open(f'locations/{file}', encoding='utf-8') as json_file:
                 area_json_file = json.load(json_file)
-                location = Location(name=file[:-5])
+                location = Location(name=file[:-5])  # slice off .json to get just the location name
                 for area_json in area_json_file:
                     new_area = Area(area_json)
                     location.add_area(new_area)

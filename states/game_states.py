@@ -307,7 +307,7 @@ class RunningState:
             pass
 
     def display(self):
-        self.game.hud.print_map()
+        self.game.hud.print_hud()
         self.player.current_area.print_area()
 
     def check_events(self, user_input):

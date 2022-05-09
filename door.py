@@ -18,7 +18,7 @@ class Door:
         dy = 0
         # check which door is being used so the players position can properly be set in the next area
         # ie if player goes through a door going up then they will be placed in the next area next to the
-        # door going down in that area
+        # bottom door in that area
         if self.symbol == 'u':
             other_symbol = 'd'
             dy = -1
@@ -50,4 +50,4 @@ class Door:
             self.use_door(player)
             game.hud.area = player.current_area
             game.hud.update_map()
-            player.current_area.visited = True
+            player.current_area.visited = True  # used to check if the HUD's mini map needs to be updated or not

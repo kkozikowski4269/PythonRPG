@@ -1,6 +1,7 @@
 import random
 
 import factories.potion_factory
+import util
 from states.enemy_states import EnemyUnspawnedState
 from states.game_states import BattleState, VictoryState, BattleEndState
 from weapon import Sword, Staff, Hammer, Dagger
@@ -80,6 +81,7 @@ class Enemy:
         if next_space not in self.area.WALLS:
             self.clear_position()
             self.set_position(self.x + dx, self.y + dy)
+            # prevent enemies from trying to move through door spaces
             for door in self.area.doors.values():
                 if self.is_colliding(door):
                     self.set_position(self.x + (-1 * dx), self.y + (-1 * dy))
@@ -114,9 +116,11 @@ class Enemy:
         pass
 
     def attack(self):
+        util.play_sound_effect('enemy_hit_sound.wav')
         damage = random.choices([self.main_attack(), self.alt_attack()], [75, 25], k=1)
         return int(damage[0])
 
+    # scale enemy stats with their level
     def scale_stats(self):
         self.max_hp = self.max_hp * self.level
         self.strength = self.strength * self.level
@@ -142,6 +146,7 @@ class Skeleton(Enemy):
         self.xp = 5*level
         self.weapon_inventory = []
 
+    # temporary solution to giving enemies items to drop on defeat
     def fill_inventories(self):
         self.weapon_drops = [None, Sword(1), Sword(2), Sword(4), Dagger(3)]
         self.weapon_inventory = random.choices(self.weapon_drops, [50, 25, 10, 2, 13], k=1)

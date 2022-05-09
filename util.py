@@ -10,6 +10,7 @@ class Music:
 pygame.init()
 
 
+# get ASCII image from text file
 def get_image(file_name):
     file = open(file_name, "r")
     image = file.read()
@@ -17,6 +18,7 @@ def get_image(file_name):
     return image
 
 
+# set music volume
 def set_volume(volume):
     if volume > 10:
         Music.current_volume = 10
@@ -27,6 +29,7 @@ def set_volume(volume):
     pygame.mixer.music.set_volume(Music.current_volume / 10)
 
 
+# set sound effect volume
 def set_sfx_volume(volume):
     if volume > 10:
         Music.current_sfx_volume = 10
@@ -38,6 +41,7 @@ def set_sfx_volume(volume):
 
 def get_volume():
     return Music.current_volume
+
 
 def get_sfx_volume():
     return Music.current_sfx_volume

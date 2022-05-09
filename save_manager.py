@@ -22,6 +22,7 @@ class SaveManager:
             game_load = None
         return game_load
 
+    # remove file from save_files directory
     def delete_game(self, file_name):
         self.save_names.remove(file_name)
         if os.path.exists(f'{self.saves_dir}{file_name}.bin'):
@@ -29,9 +30,11 @@ class SaveManager:
 
     def get_save_files(self):
         saves = []
+        # make sure that a save_files directory exists
         if not os.path.exists('save_files'):
             os.mkdir(os.path.join('save_files'))
         for save_file in os.listdir('save_files'):
+            # find all of the binary files in save_files directory
             if re.search(r".bin$", save_file) is not None:
                 saves.append(save_file[:-4])
         return saves

@@ -9,16 +9,19 @@ class HUD:
                         ['  ', '  ', '  ', '  ', '  ', '  ', '  '],
                         ['  ', '  ', '  ', '  ', '  ', '  ', '  ']]
 
-    def print_map(self):
+    def print_hud(self):
+        # print the heading portion of the HUD
         print('=========================================\n'
               f'|{self.location.name.center(39)}|\n'
               f'|{self.area.name.center(39)}|\n'
               '=========================================')
-        for i, x in enumerate(self.minimap):
+        for i, row in enumerate(self.minimap):
+            # print the mini map portion of the HUD
             print('|', end='')
-            for y in x:
-                print(y, end='')
+            for index in row:
+                print(index, end='')
 
+            # print the player's stats portion of the HUD
             print('|', end='')
             if i == 0:
                 print(f'  {self.game.player.name}'.ljust(24) + '|')
@@ -32,6 +35,7 @@ class HUD:
                 print(f'  Level: {self.game.player.level} xp: {self.game.player.xp}/{self.game.player.xp_to_level}'.ljust(24) + '|')
             else:
                 print(''.ljust(24) + '|')
+        # print the controls portion of the HUD
         print('=========================================\n'
               '| Move: w/a/s/d                         |\n'
               '| Pause: m                              |\n'
